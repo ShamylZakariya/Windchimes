@@ -1255,7 +1255,7 @@ MonoBehaviour:
   target: {fileID: 1617607613}
   bells:
   - {fileID: 297991640}
-  windVelocity: 1
+  windVelocity: 0.1
   windParticleMass: 0.01
 --- !u!1 &1617607612
 GameObject:
