@@ -6,121 +6,53 @@ static class CylinderIntersection
 {
     /// <summary>
     /// Compute intersection of an infinite ray with a capped cylinder
-    /// adapted from http://iquilezles.org/www/articles/intersectors/intersectors.htm
+    /// adapted from https://stackoverflow.com/questions/4078401/trying-to-optimize-line-vs-cylinder-intersection
     /// </summary>
-    /// <param name="ro">Ray origin</param>
-    /// <param name="rd">Ray direction (normalized)</param>
-    /// <param name="pa">one end of the cylinder</param>
-    /// <param name="pb">other end of the cylinder</param>
-    /// <param name="ra">radius of cylinder</param>
+    /// <param name="start">Ray origin</param>
+    /// <param name="dir">Ray direction (normalized)</param>
+    /// <param name="A">one end of the cylinder</param>
+    /// <param name="B">other end of the cylinder</param>
+    /// <param name="r">radius of cylinder</param>
     /// <param name="intersection">If the ray intesects, location of intersection</param>
     /// <param name="normal">If the ray intesects, normal of cylinder at intersection</param>
-    /// <returns>True if the ray intersects the cylinder</returns>
-    public static bool InfiniteRay(in Vector3 ro, in Vector3 rd, in Vector3 pa, in Vector3 pb, float ra, out Vector3 intersection, out Vector3 normal)
+    /// <param name="distance">If the ray intesects, distance of intersection from ro</param>
+    /// /// <returns>True if the ray intersects the cylinder</returns>
+    public static bool Ray(Vector3 start, Vector3 dir, Vector3 A, Vector3 B, float r, out Vector3 intersection, out Vector3 normal, out float distance)
     {
-        Vector3 ca = pb - pa;
-        Vector3 oc = ro - pa;
-        float caca = Vector3.Dot(ca, ca);
-        float card = Vector3.Dot(ca, rd);
-        float caoc = Vector3.Dot(ca, oc);
-        float a = caca - card * card;
-        float b = caca * Vector3.Dot(oc, rd) - caoc * card;
-        float c = caca * Vector3.Dot(oc, oc) - caoc * caoc - ra * ra * caca;
-        float h = b * b - a * c;
-        if (h < 0.0)
-        {
-            intersection = Vector3.zero;
-            normal = Vector3.zero;
-            return false;
-        }
-
-        h = Mathf.Sqrt(h);
-        float t = (-b - h) / a;
-
-        // body
-        float y = caoc + t * card;
-        Vector3 v = (oc + t * rd - ca * y / caca) / ra;
-        if (y > 0.0 && y < caca)
-        {
-            intersection = ro + rd * t;
-            normal = new Vector3(v.x, v.y, v.z);
-            return true;
-        }
-
-        // caps
-        t = (((y < 0.0f) ? 0.0f : caca) - caoc) / card;
-        v = ca * Mathf.Sign(y) / caca;
-        if (Mathf.Abs(b + a * t) < h)
-        {
-            intersection = ro + rd * t;
-            normal = new Vector3(v.x, v.y, v.z);
-            return true;
-        }
-
-        intersection = Vector3.zero;
+        distance = 0;
         normal = Vector3.zero;
-        return false;
+        intersection = Vector3.zero;
+
+        Vector3 AB = B - A;
+        Vector3 AO = start - A;
+        Vector3 AOxAB = Vector3.Cross(AO, AB); //AO.crossProduct(AB);
+        Vector3 VxAB = Vector3.Cross(dir, AB); //dir.crossProduct(AB);
+        float ab2 = Vector3.Dot(AB, AB); //AB.dotProduct(AB);
+        float a = Vector3.Dot(VxAB, VxAB); //VxAB.dotProduct(VxAB);
+        float b = 2 * Vector3.Dot(VxAB, AOxAB); //2 * VxAB.dotProduct(AOxAB);
+        float c = Vector3.Dot(AOxAB, AOxAB) - (r * r * ab2); //AOxAB.dotProduct(AOxAB) - (r * r * ab2);
+        float d = b * b - 4 * a * c;
+        if (d < 0) return false;
+        float time = (-b - Mathf.Sqrt(d)) / (2 * a);
+        if (time < 0) return false;
+
+        intersection = start + dir * time;        /// intersection point
+        Vector3 projection = A + (Vector3.Dot(AB, (intersection - A)) / ab2) * AB; //A + (AB.dotProduct(intersection - A) / ab2) * AB; /// intersection projected onto cylinder axis
+        if ((projection - A).magnitude + (B - projection).magnitude > AB.magnitude) return false; /// THIS IS THE SLOW SAFE WAY
+
+        normal = (intersection - projection).normalized;
+        distance = time; /// at last
+        return true;
     }
 
-    /// <summary>
-    /// Compute intersection of a finite ray with a capped cylinder
-    /// adapted from http://iquilezles.org/www/articles/intersectors/intersectors.htm
-    /// </summary>
-    /// <param name="ro">Ray origin</param>
-    /// <param name="re">Ray end</param>
-    /// <param name="pa">one end of the cylinder</param>
-    /// <param name="pb">other end of the cylinder</param>
-    /// <param name="ra">radius of cylinder</param>
-    /// <param name="intersection">If the ray intesects, location of intersection</param>
-    /// <param name="normal">If the ray intesects, normal of cylinder at intersection</param>
-    /// <returns>True if the ray intersects the cylinder</returns>
-    public static bool FiniteRay(in Vector3 ro, in Vector3 re, in Vector3 pa, in Vector3 pb, float ra, out Vector3 intersection, out Vector3 normal)
+    public static bool Line(Vector3 start, Vector3 end, Vector3 A, Vector3 B, float r, out Vector3 intersection, out Vector3 normal, out float distance)
     {
-        float length = (re - ro).magnitude;
-        Vector3 rd = (re - ro) / length;
-        Vector3 ca = pb - pa;
-        Vector3 oc = ro - pa;
-        float caca = Vector3.Dot(ca, ca);
-        float card = Vector3.Dot(ca, rd);
-        float caoc = Vector3.Dot(ca, oc);
-        float a = caca - card * card;
-        float b = caca * Vector3.Dot(oc, rd) - caoc * card;
-        float c = caca * Vector3.Dot(oc, oc) - caoc * caoc - ra * ra * caca;
-        float h = b * b - a * c;
+        Vector3 dir = end - start;
+        float length = dir.magnitude + 1e-5f;
+        dir /= length;
 
-        if (h < 0.0)
-        {
-            intersection = Vector3.zero;
-            normal = Vector3.zero;
-            return false;
-        }
-
-        h = Mathf.Sqrt(h);
-        float t = (-b - h) / a;
-
-        // body
-        float y = caoc + t * card;
-        Vector3 n = (oc + t * rd - ca * y / caca) / ra;
-        if ((y > 0.0) && (y < caca) && (t <= length))
-        {
-            intersection = ro + rd * t;
-            normal = n;
-            return true;
-        }
-
-        // caps
-        t = (((y < 0.0f) ? 0.0f : caca) - caoc) / card;
-        n = ca * Mathf.Sign(y) / caca;
-        if ((Mathf.Abs(b + a * t) < h) && (t <= length))
-        {
-            intersection = ro + rd * t;
-            normal = n;
-            return true;
-        }
-
-        intersection = Vector3.zero;
-        normal = Vector3.zero;
-        return false;
+        return Ray(start, dir, A, B, r, out intersection, out normal, out distance) && distance <= length;
     }
+
 
 }

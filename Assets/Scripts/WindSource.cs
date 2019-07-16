@@ -30,8 +30,6 @@ public class WindSource : MonoBehaviour
         float radius = Mathf.Max(new float[] { b.size.x, b.size.y, b.size.z });
         _particlePruningBoundsOrigin = b.center;
         _particlePruningBoundsRadius2 = radius * radius;
-
-        Debug.LogFormat("[WindSource::Start] - pruning origin: {0} radius: {1}", b.center, radius);
     }
 
     void Update()
@@ -47,8 +45,9 @@ public class WindSource : MonoBehaviour
         {
             // for now send a single pulse to the center of the first bell
             ChimeBell bell = bells[0];
-            Vector3 start = transform.position + Random.onUnitSphere * 0.05f;
-            Vector3 dir = ((bell.transform.position + Random.onUnitSphere * 0.05f) - transform.position).normalized;
+            float wiggle = 0;
+            Vector3 start = transform.position + Random.onUnitSphere * wiggle;
+            Vector3 dir = ((bell.transform.position + Random.onUnitSphere * wiggle) - transform.position).normalized;
             EmitWindParticle(start, dir);
         }
 
@@ -94,19 +93,27 @@ public class WindSource : MonoBehaviour
             }
 
             ChimeBell bell = bells[0];
-            if (bell.Collider.Raycast(new Ray(position, particle.dir), out var hitInfo, distanceTraveled))
+            
+            if (CylinderIntersection.Ray(position, particle.dir, bell.Top, bell.Bottom, bell.Radius,
+                out Vector3 intersection, out Vector3 normal, out float distance) && distance < distanceTraveled)
             {
+                // first add intersection point to the path so we can render it
+                path.Add(intersection);
+
                 // we have a collision - apply impulse and deflect and reduce power of the particle
                 // compute the reflection (this is the new particle direction) and the incidence
                 // incidence goeas from -1 to 1 where -1 means we hit square on, and 1 means we 
                 // perfectly grazed the surface imparting no energy
-                Vector3 reflection = Vector3.Reflect(particle.dir, hitInfo.normal);
+
+                Vector3 reflection = Vector3.Reflect(particle.dir, normal);
                 float incidence = Vector3.Dot(particle.dir, reflection);
 
                 // remap the incidence such that a value of 1 means full energy transfer and 0 means none
                 float energyTransfer = 1 - ((incidence + 1f) / 2f);
                 Vector3 force = particle.dir * particle.velocity * particle.mass * energyTransfer;
-                bell.Rigidbody.AddForceAtPosition(force, hitInfo.point, ForceMode.Impulse);
+
+                bell.Rigidbody.AddForceAtPosition(force, intersection, ForceMode.Impulse);
+
 
                 // reduce particle velocity
                 particle.velocity *= 1 - energyTransfer;
@@ -115,7 +122,7 @@ public class WindSource : MonoBehaviour
 
                 // update the particle position along the path up to collision and then the 
                 // remaining distance along the reflection
-                nextPosition = hitInfo.point + (reflection * Mathf.Max(distanceTraveled - hitInfo.distance, 0.01f));
+                nextPosition = intersection + (reflection * Mathf.Max(distanceTraveled - distance, 0.01f));
             }
 
             // update the particle
@@ -128,7 +135,7 @@ public class WindSource : MonoBehaviour
             for (int j = 1, N = path.Count; j < N; j++)
             {
                 Vector3 b = path[j];
-                Debug.DrawLine(a, b, particle.color);
+                RuntimeDebugDraw.Draw.DrawLine(a, b, particle.color);
                 a = b;
             }
         }
@@ -158,7 +165,8 @@ public class WindSource : MonoBehaviour
             velocity = windVelocity,
             mass = windParticleMass,
             alive = true,
-            color = Random.ColorHSV(0, 1, 0.7f, 0.9f, 0.9f, 1f),
+            color = Color.black,
+            // color = Random.ColorHSV(0, 1, 0.9f, 1f, 1f, 1f),
             hasEnteredTargetBounds = false,
         };
 
