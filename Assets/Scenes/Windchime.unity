@@ -988,7 +988,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1084493546}
   m_LocalRotation: {x: -0.50040853, y: -0.49959117, z: -0.50040853, w: -0.49959117}
-  m_LocalPosition: {x: 0.5412461, y: 0.08631611, z: 1.0119171}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: -0.03, z: 1}
   m_Children: []
   m_Father: {fileID: 1293894797}
@@ -1233,7 +1233,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1293894796}
   m_LocalRotation: {x: 0, y: 0.7071068, z: -0, w: -0.7071068}
-  m_LocalPosition: {x: 3.88, y: 0.35, z: -0.56}
+  m_LocalPosition: {x: 1.23, y: 0.982, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1084493547}
@@ -1255,8 +1255,8 @@ MonoBehaviour:
   target: {fileID: 1617607613}
   bells:
   - {fileID: 297991640}
-  windVelocity: 0.1
-  windParticleMass: 0.01
+  windVelocity: 0.5
+  windParticleMass: 0.05
 --- !u!1 &1617607612
 GameObject:
   m_ObjectHideFlags: 0

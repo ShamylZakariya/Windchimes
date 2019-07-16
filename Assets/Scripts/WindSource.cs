@@ -136,8 +136,10 @@ public class WindSource : MonoBehaviour
 
     void PruneWindParticles()
     {
-        foreach(WindParticle p in _particles) {
-            if (!p.alive) {
+        foreach (WindParticle p in _particles)
+        {
+            if (!p.alive)
+            {
                 _particlePaths.Remove(p.id);
             }
         }
