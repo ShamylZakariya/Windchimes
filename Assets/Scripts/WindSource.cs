@@ -13,6 +13,8 @@ public class WindSource : MonoBehaviour
     [Header("Wind Properties")]
     [SerializeField] float windVelocity = 1;
     [SerializeField] float windParticleMass = 0.001f;
+    [SerializeField] float particlesPerSecond = 20;
+    [SerializeField] bool renderParticlePaths = false;
 
     private List<WindParticle> _particles = new List<WindParticle>();
     private Dictionary<int, List<Vector3>> _particlePaths = new Dictionary<int, List<Vector3>>();
@@ -20,6 +22,7 @@ public class WindSource : MonoBehaviour
     private const float _particlePruningPeriod = 1;
     private Vector3 _particlePruningBoundsOrigin;
     private float _particlePruningBoundsRadius2;
+    private float _secondsUntilNextParticle = 0;
 
     void Start()
     {
@@ -30,6 +33,12 @@ public class WindSource : MonoBehaviour
         float radius = Mathf.Max(new float[] { b.size.x, b.size.y, b.size.z });
         _particlePruningBoundsOrigin = b.center;
         _particlePruningBoundsRadius2 = radius * radius;
+
+        if (particlesPerSecond == 0)
+        {
+            Debug.Log("[WindSource::Start] - particles per second == 0, so turning on particle path rendering");
+            renderParticlePaths = true;
+        }
     }
 
     void Update()
@@ -41,8 +50,11 @@ public class WindSource : MonoBehaviour
             transform.LookAt(targetBounds.center);
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        _secondsUntilNextParticle -= Time.deltaTime;
+        if ((particlesPerSecond > 0 && _secondsUntilNextParticle < 0) || Input.GetKeyDown(KeyCode.Space))
         {
+            _secondsUntilNextParticle = 1 / particlesPerSecond;
+
             // for now send a single pulse to the center of the first bell
             ChimeBell bell = bells[0];
             float wiggle = 0.02f;
@@ -68,7 +80,7 @@ public class WindSource : MonoBehaviour
             WindParticle particle = _particles[i];
             if (!particle.alive) { continue; }
 
-            List<Vector3> path = _particlePaths[particle.id];
+            List<Vector3> path = renderParticlePaths ? _particlePaths[particle.id] : null;
 
             // raycast against bell the short ray
             Vector3 position = particle.position;
@@ -98,7 +110,7 @@ public class WindSource : MonoBehaviour
                 out Vector3 intersection, out Vector3 normal, out float distance) && distance < distanceTraveled)
             {
                 // first add intersection point to the path so we can render it
-                path.Add(intersection);
+                if (renderParticlePaths) { path.Add(intersection); }
 
                 // we have a collision - apply impulse and deflect and reduce power of the particle
                 // compute the reflection (this is the new particle direction) and the incidence
@@ -127,16 +139,19 @@ public class WindSource : MonoBehaviour
 
             // update the particle
             particle.position = nextPosition;
-            path.Add(nextPosition);
+            if (renderParticlePaths) { path.Add(nextPosition); }
             _particles[i] = particle;
 
             // now draw this particle's path
-            Vector3 a = path[0];
-            for (int j = 1, N = path.Count; j < N; j++)
+            if (renderParticlePaths)
             {
-                Vector3 b = path[j];
-                RuntimeDebugDraw.Draw.DrawLine(a, b, particle.color);
-                a = b;
+                Vector3 a = path[0];
+                for (int j = 1, N = path.Count; j < N; j++)
+                {
+                    Vector3 b = path[j];
+                    RuntimeDebugDraw.Draw.DrawLine(a, b, particle.color);
+                    a = b;
+                }
             }
         }
     }

@@ -1264,6 +1264,8 @@ MonoBehaviour:
   - {fileID: 297991640}
   windVelocity: 0.5
   windParticleMass: 0.05
+  particlesPerSecond: 0
+  renderParticlePaths: 0
 --- !u!1 &1561027294
 GameObject:
   m_ObjectHideFlags: 0
