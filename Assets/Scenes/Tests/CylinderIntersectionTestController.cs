@@ -12,9 +12,9 @@ public class CylinderIntersectionTestController : MonoBehaviour
 
     [SerializeField] Transform ray_a;
     [SerializeField] Transform ray_b;
+    [SerializeField] float _spinRate = 5f;
 
     private CapsuleCollider _collider;
-    private float _spinRate = 5f;
 
     void Start()
     {
@@ -27,6 +27,8 @@ public class CylinderIntersectionTestController : MonoBehaviour
         cylinder.transform.Rotate(Vector3.right, _spinRate * Time.deltaTime);
         cylinder.transform.Rotate(Vector3.forward, _spinRate * Time.deltaTime);
 
+        TestRay_Backtrack(ray_a.position, ray_b.position);
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             TestCylinderCollision(ray_a.position, ray_b.position);
@@ -37,11 +39,11 @@ public class CylinderIntersectionTestController : MonoBehaviour
         }
     }
 
-    void TestStructure() 
+    void TestStructure()
     {
-        Vector3 a = cylinder.transform.TransformPoint(new Vector3(0,_collider.height / 2,0));
-        Vector3 b = cylinder.transform.TransformPoint(new Vector3(0,-_collider.height / 2,0));
-        float radius = Vector3.Distance(cylinder.transform.position, cylinder.transform.TransformPoint(new Vector3(_collider.radius,0,0)));
+        Vector3 a = cylinder.transform.TransformPoint(new Vector3(0, _collider.height / 2, 0));
+        Vector3 b = cylinder.transform.TransformPoint(new Vector3(0, -_collider.height / 2, 0));
+        float radius = Vector3.Distance(cylinder.transform.position, cylinder.transform.TransformPoint(new Vector3(_collider.radius, 0, 0)));
 
         float distA = Vector3.Distance(a, cylinderEndpointA.position);
         float distB = Vector3.Distance(b, cylinderEndpointB.position);
@@ -52,6 +54,30 @@ public class CylinderIntersectionTestController : MonoBehaviour
             a, b, radius,
             cylinderEndpointA.position, cylinderEndpointB.position, Vector3.Distance(cylinderRadius.position, cylinderEndpointB.position)
         );
+    }
+
+    void TestRay_Backtrack(Vector3 a, Vector3 b)
+    {
+        Vector3 dir = b - a;
+        float length = dir.magnitude;
+        dir /= length;
+
+        Vector3 ca = cylinder.transform.TransformPoint(new Vector3(0, _collider.height / 2, 0));
+        Vector3 cb = cylinder.transform.TransformPoint(new Vector3(0, -_collider.height / 2, 0));
+        float cr = Vector3.Distance(cylinder.transform.position, cylinder.transform.TransformPoint(new Vector3(_collider.radius, 0, 0)));
+
+        bool didHit = CylinderIntersection.Ray_Backtracking(a, dir, ca, cb, cr, out Vector3 intersection, out Vector3 normal, out float distance);
+        if (didHit && distance < length)
+        {
+            float len = 0.25f;
+            Vector3 origin = intersection + 0.01f * normal;
+            Vector3 right = Vector3.Cross(Vector3.up, normal);
+            Vector3 up = Vector3.Cross(normal, right);
+
+            RuntimeDebugDraw.Draw.DrawLine(origin, origin + len * normal, Color.blue, 0, false);
+            RuntimeDebugDraw.Draw.DrawLine(origin, origin + len * right, Color.red, 0, false);
+            RuntimeDebugDraw.Draw.DrawLine(origin, origin + len * up, Color.green, 0, false);
+        }
     }
 
     void TestCylinderCollision(Vector3 a, Vector3 b)
@@ -115,9 +141,9 @@ public class CylinderIntersectionTestController : MonoBehaviour
         // Vector3 cb = cylinderEndpointB.position;
         // float cr = Vector3.Distance(cylinderRadius.position, cylinderEndpointB.position);
 
-        Vector3 ca = cylinder.transform.TransformPoint(new Vector3(0,_collider.height / 2,0));
-        Vector3 cb = cylinder.transform.TransformPoint(new Vector3(0,-_collider.height / 2,0));
-        float cr = Vector3.Distance(cylinder.transform.position, cylinder.transform.TransformPoint(new Vector3(_collider.radius,0,0)));
+        Vector3 ca = cylinder.transform.TransformPoint(new Vector3(0, _collider.height / 2, 0));
+        Vector3 cb = cylinder.transform.TransformPoint(new Vector3(0, -_collider.height / 2, 0));
+        float cr = Vector3.Distance(cylinder.transform.position, cylinder.transform.TransformPoint(new Vector3(_collider.radius, 0, 0)));
 
         return CylinderIntersection.Line(a, b, ca, cb, cr, out intersection, out normal, out distance);
     }

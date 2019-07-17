@@ -45,7 +45,7 @@ public class WindSource : MonoBehaviour
         {
             // for now send a single pulse to the center of the first bell
             ChimeBell bell = bells[0];
-            float wiggle = 0;
+            float wiggle = 0.02f;
             Vector3 start = transform.position + Random.onUnitSphere * wiggle;
             Vector3 dir = ((bell.transform.position + Random.onUnitSphere * wiggle) - transform.position).normalized;
             EmitWindParticle(start, dir);
@@ -93,8 +93,8 @@ public class WindSource : MonoBehaviour
             }
 
             ChimeBell bell = bells[0];
-            
-            if (CylinderIntersection.Ray(position, particle.dir, bell.Top, bell.Bottom, bell.Radius,
+
+            if (CylinderIntersection.Ray_Backtracking(position, particle.dir, bell.Top, bell.Bottom, bell.Radius,
                 out Vector3 intersection, out Vector3 normal, out float distance) && distance < distanceTraveled)
             {
                 // first add intersection point to the path so we can render it
