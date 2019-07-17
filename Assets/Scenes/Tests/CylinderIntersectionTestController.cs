@@ -66,7 +66,7 @@ public class CylinderIntersectionTestController : MonoBehaviour
         Vector3 cb = cylinder.transform.TransformPoint(new Vector3(0, -_collider.height / 2, 0));
         float cr = Vector3.Distance(cylinder.transform.position, cylinder.transform.TransformPoint(new Vector3(_collider.radius, 0, 0)));
 
-        bool didHit = CylinderIntersection.Ray_Backtracking(a, dir, ca, cb, cr, out Vector3 intersection, out Vector3 normal, out float distance);
+        bool didHit = Raycasting.Custom.CappedCylinder.Ray_Backtracking(a, dir, ca, cb, cr, out Vector3 intersection, out Vector3 normal, out float distance);
         if (didHit && distance < length)
         {
             float len = 0.25f;
@@ -145,7 +145,7 @@ public class CylinderIntersectionTestController : MonoBehaviour
         Vector3 cb = cylinder.transform.TransformPoint(new Vector3(0, -_collider.height / 2, 0));
         float cr = Vector3.Distance(cylinder.transform.position, cylinder.transform.TransformPoint(new Vector3(_collider.radius, 0, 0)));
 
-        return CylinderIntersection.Line(a, b, ca, cb, cr, out intersection, out normal, out distance);
+        return Raycasting.Custom.CappedCylinder.Line(a, b, ca, cb, cr, out intersection, out normal, out distance);
     }
 
 }

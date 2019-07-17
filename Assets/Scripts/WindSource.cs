@@ -7,14 +7,19 @@ using UnityEngine;
 
 public class WindSource : MonoBehaviour
 {
-    [SerializeField] Transform target = null;
-    [SerializeField] ChimeBell[] bells = null;
+    [SerializeField] GameObject windChime = null;
+
+    [Header("Fan Properties")]
+    [SerializeField] float fanRadius = 0.5f;
+    [SerializeField] GameObject fan;
 
     [Header("Wind Properties")]
     [SerializeField] float windVelocity = 1;
     [SerializeField] float windParticleMass = 0.001f;
     [SerializeField] float particlesPerSecond = 20;
     [SerializeField] bool renderParticlePaths = false;
+    [SerializeField] LayerMask windTargetLayer;
+
 
     private List<WindParticle> _particles = new List<WindParticle>();
     private Dictionary<int, List<Vector3>> _particlePaths = new Dictionary<int, List<Vector3>>();
@@ -23,16 +28,31 @@ public class WindSource : MonoBehaviour
     private Vector3 _particlePruningBoundsOrigin;
     private float _particlePruningBoundsRadius2;
     private float _secondsUntilNextParticle = 0;
+    private RaycastHit[] _raycastHits;
+    private ChimeBell[] _bells;
+    private int _particleId = 0;
 
     void Start()
     {
-        _secondsUntilNextParticlePruning = _particlePruningPeriod;
+        fan.transform.localScale = new Vector3(fanRadius, 0.01f, fanRadius);
 
-        Bounds b = target.CalculateBounds();
+        //
+        // collect our bells
+        //
+
+        _bells = windChime.GetComponentsInChildren<ChimeBell>().ToArray();
+        _raycastHits = new RaycastHit[_bells.Length];
+
+        //
+        //  Set up pruning
+        //
+
+        Bounds b = TransformExtensions.CalculateBounds(_bells);
         b.size *= 2;
         float radius = Mathf.Max(new float[] { b.size.x, b.size.y, b.size.z });
         _particlePruningBoundsOrigin = b.center;
         _particlePruningBoundsRadius2 = radius * radius;
+        _secondsUntilNextParticlePruning = _particlePruningPeriod;
 
         if (particlesPerSecond == 0)
         {
@@ -43,34 +63,12 @@ public class WindSource : MonoBehaviour
 
     void Update()
     {
-        // make the "fan" face the chime - this is just for appearance
-        if (target != null)
-        {
-            Bounds targetBounds = target.CalculateBounds();
-            transform.LookAt(targetBounds.center);
-        }
+        // make the "fan" look at where our chimes are
+        transform.LookAt(_particlePruningBoundsOrigin);
 
-        _secondsUntilNextParticle -= Time.deltaTime;
-        if ((particlesPerSecond > 0 && _secondsUntilNextParticle < 0) || Input.GetKeyDown(KeyCode.Space))
-        {
-            _secondsUntilNextParticle = 1 / particlesPerSecond;
-
-            // for now send a single pulse to the center of the first bell
-            ChimeBell bell = bells[0];
-            float wiggle = 0.02f;
-            Vector3 start = transform.position + Random.onUnitSphere * wiggle;
-            Vector3 dir = ((bell.transform.position + Random.onUnitSphere * wiggle) - transform.position).normalized;
-            EmitWindParticle(start, dir);
-        }
-
+        EmitWindParticles();
         UpdateWindParticles();
-
-        _secondsUntilNextParticlePruning -= Time.deltaTime;
-        if (_secondsUntilNextParticlePruning <= 0)
-        {
-            _secondsUntilNextParticlePruning = _particlePruningPeriod;
-            PruneWindParticles();
-        }
+        PruneWindParticles();
     }
 
     void UpdateWindParticles()
@@ -82,10 +80,11 @@ public class WindSource : MonoBehaviour
 
             List<Vector3> path = renderParticlePaths ? _particlePaths[particle.id] : null;
 
-            // raycast against bell the short ray
-            Vector3 position = particle.position;
-            Vector3 nextPosition = position + (particle.dir * particle.velocity * Time.deltaTime);
-            float distanceTraveled = Vector3.Distance(nextPosition, position);
+            //
+            //  Particles are allowd to move into the target bounds, but when they exit it
+            //  they are done with simulation. If a particle velocity drops to zero it is
+            //  also all done. Pruning will periodically clear out dead particles.
+            //
 
             if (!particle.hasEnteredTargetBounds)
             {
@@ -98,35 +97,46 @@ public class WindSource : MonoBehaviour
             {
                 if ((particle.position - _particlePruningBoundsOrigin).sqrMagnitude > _particlePruningBoundsRadius2)
                 {
+                    // we're done here
                     particle.alive = false;
                     _particles[i] = particle;
+
                     continue;
                 }
             }
 
-            ChimeBell bell = bells[0];
+            //
+            //  compute the travel of the particle this step. Run raycasts.
+            //  If there's a collision, update particle direction and velocity
+            //
 
-            if (CylinderIntersection.Ray_Backtracking(position, particle.dir, bell.Top, bell.Bottom, bell.Radius,
-                out Vector3 intersection, out Vector3 normal, out float distance) && distance < distanceTraveled)
+            Vector3 nextPosition = particle.position + (particle.dir * particle.velocity * Time.deltaTime);
+            float distanceTraveled = Vector3.Distance(nextPosition, particle.position);
+            int hitCount = Physics.RaycastNonAlloc(new Ray(particle.position, particle.dir), _raycastHits, distanceTraveled, windTargetLayer, QueryTriggerInteraction.Ignore);
+            
+            for (int hit = 0; hit < hitCount; hit++)
             {
-                // first add intersection point to the path so we can render it
-                if (renderParticlePaths) { path.Add(intersection); }
-
+                //
                 // we have a collision - apply impulse and deflect and reduce power of the particle
                 // compute the reflection (this is the new particle direction) and the incidence
                 // incidence goeas from -1 to 1 where -1 means we hit square on, and 1 means we 
                 // perfectly grazed the surface imparting no energy
+                //
 
-                Vector3 reflection = Vector3.Reflect(particle.dir, normal);
+                RaycastHit hitInfo = _raycastHits[hit];
+
+                // first add intersection point to the path so we can render it
+                if (renderParticlePaths) { path.Add(hitInfo.point); }
+
+                Vector3 reflection = Vector3.Reflect(particle.dir, hitInfo.normal);
                 float incidence = Vector3.Dot(particle.dir, reflection);
 
                 // remap the incidence such that a value of 1 means full energy transfer and 0 means none
                 float energyTransfer = 1 - ((incidence + 1f) / 2f);
                 Vector3 force = particle.dir * particle.velocity * particle.mass * energyTransfer;
 
-                bell.Rigidbody.AddForceAtPosition(force, intersection, ForceMode.Impulse);
-
-
+                hitInfo.rigidbody.AddForceAtPosition(force, hitInfo.point, ForceMode.Impulse);
+        
                 // reduce particle velocity
                 particle.velocity *= 1 - energyTransfer;
                 particle.dir = reflection;
@@ -134,15 +144,21 @@ public class WindSource : MonoBehaviour
 
                 // update the particle position along the path up to collision and then the 
                 // remaining distance along the reflection
-                nextPosition = intersection + (reflection * Mathf.Max(distanceTraveled - distance, 0.01f));
+                nextPosition = hitInfo.point + (reflection * Mathf.Max(distanceTraveled - hitInfo.distance, 0.01f));
             }
 
-            // update the particle
+            //
+            // update the particle and store
+            //
+
             particle.position = nextPosition;
             if (renderParticlePaths) { path.Add(nextPosition); }
             _particles[i] = particle;
 
+            //
             // now draw this particle's path
+            //
+
             if (renderParticlePaths)
             {
                 Vector3 a = path[0];
@@ -158,17 +174,36 @@ public class WindSource : MonoBehaviour
 
     void PruneWindParticles()
     {
-        foreach (WindParticle p in _particles)
+        _secondsUntilNextParticlePruning -= Time.deltaTime;
+        if (_secondsUntilNextParticlePruning <= 0)
         {
-            if (!p.alive)
+            _secondsUntilNextParticlePruning = _particlePruningPeriod;
+
+            foreach (WindParticle p in _particles)
             {
-                _particlePaths.Remove(p.id);
+                if (!p.alive)
+                {
+                    _particlePaths.Remove(p.id);
+                }
             }
+            _particles = _particles.Where((p) => { return p.alive; }).ToList();
         }
-        _particles = _particles.Where((p) => { return p.alive; }).ToList();
     }
 
-    private int _particleId = 0;
+    void EmitWindParticles()
+    {
+        _secondsUntilNextParticle -= Time.deltaTime;
+        if ((particlesPerSecond > 0 && _secondsUntilNextParticle < 0) || Input.GetKeyDown(KeyCode.Space))
+        {
+            _secondsUntilNextParticle = 1 / particlesPerSecond;
+
+            Vector2 c = Random.insideUnitCircle * fanRadius;
+
+            Vector3 start = fan.transform.TransformPoint(new Vector3(c.x, 0, c.y));
+            Vector3 dir = transform.forward;
+            EmitWindParticle(start, dir);
+        }
+    }
 
     void EmitWindParticle(Vector3 startPosition, Vector3 startDirection)
     {

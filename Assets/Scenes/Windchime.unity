@@ -445,7 +445,7 @@ GameObject:
   - component: {fileID: 297991634}
   - component: {fileID: 297991639}
   - component: {fileID: 297991638}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Chime Bell
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -521,10 +521,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -0.159, z: 0}
   m_LocalScale: {x: 0.05, y: 0.1, z: 0.05}
-  m_Children:
-  - {fileID: 1561027295}
-  - {fileID: 1776482847}
-  - {fileID: 1723395141}
+  m_Children: []
   m_Father: {fileID: 575747470}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -601,10 +598,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a81098b03ad643d295daf16182d5126, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _top: {fileID: 1561027295}
-  _bottom: {fileID: 1776482847}
-  _radiusMarker: {fileID: 1723395141}
-  doItSmart: 0
 --- !u!1 &352363760
 GameObject:
   m_ObjectHideFlags: 0
@@ -1259,43 +1252,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac1011c2fe92444bea5a7b365d074fd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 1617607613}
-  bells:
-  - {fileID: 297991640}
+  windChime: {fileID: 1063716888}
+  fanRadius: 0.5
+  fan: {fileID: 1084493546}
   windVelocity: 0.5
   windParticleMass: 0.05
-  particlesPerSecond: 0
+  particlesPerSecond: 30
   renderParticlePaths: 0
---- !u!1 &1561027294
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1561027295}
-  m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1561027295
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1561027294}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.993, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 297991637}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  windTargetLayer:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!1 &1617607612
 GameObject:
   m_ObjectHideFlags: 0
@@ -1369,64 +1335,4 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1723395140
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1723395141}
-  m_Layer: 0
-  m_Name: GameObject (2)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1723395141
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1723395140}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.49, y: -1, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 297991637}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1776482846
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1776482847}
-  m_Layer: 0
-  m_Name: GameObject (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1776482847
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1776482846}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -1, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 297991637}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

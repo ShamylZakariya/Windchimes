@@ -1,7 +1,27 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public static class TransformExtensions
 {
+    /// <summary>
+    /// Compute the bounding volume of a collection of elements
+    /// </summary>
+    /// <param name="things">collection of elements with transforms</param>
+    /// <returns>Bounding volume containing all the elements</returns>
+    public static Bounds CalculateBounds(IEnumerable<MonoBehaviour> things)
+    {
+        var enumerator = things.GetEnumerator();
+        enumerator.MoveNext();
+        Transform first = enumerator.Current.transform;
+        Bounds collector = new Bounds(first.position, Vector3.zero);
+        foreach(MonoBehaviour b in things)
+        {
+            collector.Encapsulate(b.transform.CalculateBounds());
+        }
+        return collector;
+    }
+
+    /// <returns>Compute the bounding volume of a given transform and all its children</returns>
     public static Bounds CalculateBounds(this Transform root)
     {
         Quaternion currentRotation = root.rotation;
