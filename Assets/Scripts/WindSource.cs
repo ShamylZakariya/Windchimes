@@ -10,8 +10,7 @@ public class WindSource : MonoBehaviour
     [SerializeField] GameObject windChime = null;
 
     [Header("Fan Properties")]
-    [SerializeField] float fanRadius = 0.5f;
-    [SerializeField] GameObject fan;
+    [SerializeField] GameObject windSourceVisual;
 
     [Header("Wind Properties")]
     [SerializeField] float windVelocity = 1;
@@ -26,16 +25,16 @@ public class WindSource : MonoBehaviour
     private float _secondsUntilNextParticlePruning;
     private const float _particlePruningPeriod = 1;
     private Vector3 _particlePruningBoundsOrigin;
+    private float _particlePruningBoundsRadius;
     private float _particlePruningBoundsRadius2;
     private float _secondsUntilNextParticle = 0;
     private RaycastHit[] _raycastHits;
     private ChimeBell[] _bells;
     private int _particleId = 0;
+    private Plane _fanSurfacePlane;
 
     void Start()
     {
-        fan.transform.localScale = new Vector3(fanRadius, 0.01f, fanRadius);
-
         //
         // collect our bells
         //
@@ -43,17 +42,7 @@ public class WindSource : MonoBehaviour
         _bells = windChime.GetComponentsInChildren<ChimeBell>().ToArray();
         _raycastHits = new RaycastHit[_bells.Length];
 
-        //
-        //  Set up pruning
-        //
-
-        Bounds b = TransformExtensions.CalculateBounds(_bells);
-        b.size *= 2;
-        float radius = Mathf.Max(new float[] { b.size.x, b.size.y, b.size.z });
-        _particlePruningBoundsOrigin = b.center;
-        _particlePruningBoundsRadius2 = radius * radius;
         _secondsUntilNextParticlePruning = _particlePruningPeriod;
-
         if (particlesPerSecond == 0)
         {
             Debug.Log("[WindSource::Start] - particles per second == 0, so turning on particle path rendering");
@@ -63,12 +52,27 @@ public class WindSource : MonoBehaviour
 
     void Update()
     {
-        // make the "fan" look at where our chimes are
+        // update the bounding region
+        Bounds b = TransformExtensions.CalculateBounds(_bells);
+        _particlePruningBoundsRadius = Mathf.Max(new float[] { b.size.x * 2, b.size.y * 2, b.size.z * 2});
+        _particlePruningBoundsOrigin = b.center;
+        _particlePruningBoundsRadius2 = _particlePruningBoundsRadius * _particlePruningBoundsRadius;
+
+        // point the fan at the bounding region and update the plane
         transform.LookAt(_particlePruningBoundsOrigin);
+        transform.position = _particlePruningBoundsOrigin - transform.forward * _particlePruningBoundsRadius;
+        _fanSurfacePlane.SetNormalAndPosition(transform.forward, transform.position);
+
 
         EmitWindParticles();
         UpdateWindParticles();
         PruneWindParticles();
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(_particlePruningBoundsOrigin, _particlePruningBoundsRadius);
     }
 
     void UpdateWindParticles()
@@ -113,7 +117,7 @@ public class WindSource : MonoBehaviour
             Vector3 nextPosition = particle.position + (particle.dir * particle.velocity * Time.deltaTime);
             float distanceTraveled = Vector3.Distance(nextPosition, particle.position);
             int hitCount = Physics.RaycastNonAlloc(new Ray(particle.position, particle.dir), _raycastHits, distanceTraveled, windTargetLayer, QueryTriggerInteraction.Ignore);
-            
+
             for (int hit = 0; hit < hitCount; hit++)
             {
                 //
@@ -136,7 +140,7 @@ public class WindSource : MonoBehaviour
                 Vector3 force = particle.dir * particle.velocity * particle.mass * energyTransfer;
 
                 hitInfo.rigidbody.AddForceAtPosition(force, hitInfo.point, ForceMode.Impulse);
-        
+
                 // reduce particle velocity
                 particle.velocity *= 1 - energyTransfer;
                 particle.dir = reflection;
@@ -192,17 +196,33 @@ public class WindSource : MonoBehaviour
 
     void EmitWindParticles()
     {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            EmitWindParticle(EmissionPointForChimeBell(_bells[0]), transform.forward);
+        }
+
         _secondsUntilNextParticle -= Time.deltaTime;
-        if ((particlesPerSecond > 0 && _secondsUntilNextParticle < 0) || Input.GetKeyDown(KeyCode.Space))
+        if ((particlesPerSecond > 0 && _secondsUntilNextParticle < 0))
         {
             _secondsUntilNextParticle = 1 / particlesPerSecond;
 
-            Vector2 c = Random.insideUnitCircle * fanRadius;
-
-            Vector3 start = fan.transform.TransformPoint(new Vector3(c.x, 0, c.y));
-            Vector3 dir = transform.forward;
-            EmitWindParticle(start, dir);
+            foreach (ChimeBell bell in _bells)
+            {
+                EmitWindParticle(EmissionPointForChimeBell(bell), transform.forward);
+            }
         }
+    }
+
+    Vector3 EmissionPointForChimeBell(ChimeBell bell)
+    {
+        // project bell's A and B points to our emission plane
+        // generate a point in a circle of radius == chime bell radius, a random distance along the line from a to b
+        Vector3 a = _fanSurfacePlane.ClosestPointOnPlane(bell.Top);
+        Vector3 b = _fanSurfacePlane.ClosestPointOnPlane(bell.Bottom);
+        Vector3 o = Vector3.Lerp(a, b, Random.Range(0f, 1f));
+        Vector2 c = Random.insideUnitCircle * bell.Radius;
+        Vector3 e = o + transform.TransformDirection(new Vector3(c.x, c.y, 0));
+        return e;
     }
 
     void EmitWindParticle(Vector3 startPosition, Vector3 startDirection)
