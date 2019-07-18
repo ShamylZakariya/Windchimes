@@ -217,23 +217,9 @@ public class WindSource : MonoBehaviour
                 }
             }
 
-            // TODO: Find an equivalent of c++ std::partition
-            Array.Sort(_particles, (a, b) => {
-                if (a.alive && b.alive) return 0;
-                else if (a.alive) return -1;
-                return 1;
-            });
-
-            // since we don't have std::partition, find the first dead particle and
-            // count that as the end of the active particle list
-            for (int i = 0, N = _particles.Length; i < N; i++)
-            {
-                if (!_particles[i].alive)
-                {
-                    _activeParticleCount = i;
-                    break;
-                }
-            }
+            // use Partition to move active particles to front; _activeParticleCount
+            // now points to first dead particle
+            _activeParticleCount = _particles.Partition((p) => p.alive);
         }
     }
 
@@ -278,7 +264,7 @@ public class WindSource : MonoBehaviour
         {
             int id = InitWindParticle(ref _particles[_activeParticleCount], startPosition, startDirection);
             _activeParticleCount++;
-            
+
             _particlePaths.Add(id, (new Vector3[] { startPosition }).ToList());
         }
         else
@@ -299,7 +285,7 @@ public class WindSource : MonoBehaviour
         p.hasEnteredTargetBounds = false;
 
         _particleId++;
-        
+
         return p.id;
     }
 }
