@@ -1426,10 +1426,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   windChime: {fileID: 1063716888}
   windSourceVisual: {fileID: 1084493546}
+  renderParticlePaths: 0
   windVelocity: 0.5
+  minVelocity: 0.001
   windParticleMass: 0.005
   particlesPerSecond: 200
-  renderParticlePaths: 0
   windTargetLayer:
     serializedVersion: 2
     m_Bits: 256

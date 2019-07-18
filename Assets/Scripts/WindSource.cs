@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -11,16 +12,21 @@ public class WindSource : MonoBehaviour
 
     [Header("Fan Properties")]
     [SerializeField] GameObject windSourceVisual;
+    [SerializeField] bool renderParticlePaths = false;
 
     [Header("Wind Properties")]
     [SerializeField] float windVelocity = 1;
+    [SerializeField] float minVelocity = 1e-3f;
     [SerializeField] float windParticleMass = 0.001f;
     [SerializeField] float particlesPerSecond = 20;
-    [SerializeField] bool renderParticlePaths = false;
     [SerializeField] LayerMask windTargetLayer;
 
 
-    private List<WindParticle> _particles = new List<WindParticle>();
+    private WindParticle[] _particles;
+    private int _activeParticleCount;
+    private int _particleId = 1;
+
+
     private Dictionary<int, List<Vector3>> _particlePaths = new Dictionary<int, List<Vector3>>();
     private float _secondsUntilNextParticlePruning;
     private const float _particlePruningPeriod = 1;
@@ -30,7 +36,6 @@ public class WindSource : MonoBehaviour
     private float _secondsUntilNextParticle = 0;
     private RaycastHit[] _raycastHits;
     private ChimeBell[] _bells;
-    private int _particleId = 0;
     private Plane _fanSurfacePlane;
 
     void Start()
@@ -48,23 +53,24 @@ public class WindSource : MonoBehaviour
             Debug.Log("[WindSource::Start] - particles per second == 0, so turning on particle path rendering");
             renderParticlePaths = true;
         }
+
+        //
+        // make a guesstimate as to how many particles we'll need
+        //
+
+        UpdateBounds();
+        float roughParticleLifetime = windVelocity / (2 * _particlePruningBoundsRadius);
+        int guesstimate = Mathf.CeilToInt(roughParticleLifetime * particlesPerSecond);
+        _particles = new WindParticle[Math.Max(guesstimate, 256)];
+        _activeParticleCount = 0;
+
+        Debug.LogFormat("[WindSource::Start] - roughParticleLifetime: {0} seconds; buffer size: {1}", roughParticleLifetime, _particles.Length);
     }
 
     void Update()
     {
-        //
-        // update the bounding region to fit the bells
-        //
-        Bounds b = TransformExtensions.CalculateBounds(_bells);
-        _particlePruningBoundsRadius = b.size.magnitude;
-        _particlePruningBoundsOrigin = b.center;
-        _particlePruningBoundsRadius2 = _particlePruningBoundsRadius * _particlePruningBoundsRadius;
-
-        // point the fan at the bounding region and update the plane
-        transform.LookAt(_particlePruningBoundsOrigin);
-        transform.position = _particlePruningBoundsOrigin - transform.forward * _particlePruningBoundsRadius;
-        _fanSurfacePlane.SetNormalAndPosition(transform.forward, transform.position);
-
+        UpdateBounds();
+        UpdateParticleEmissionSource();
 
         EmitWindParticles();
         UpdateWindParticles();
@@ -77,9 +83,25 @@ public class WindSource : MonoBehaviour
         Gizmos.DrawWireSphere(_particlePruningBoundsOrigin, _particlePruningBoundsRadius);
     }
 
+    void UpdateBounds()
+    {
+        Bounds b = TransformExtensions.CalculateBounds(_bells);
+        _particlePruningBoundsRadius = b.size.magnitude;
+        _particlePruningBoundsOrigin = b.center;
+        _particlePruningBoundsRadius2 = _particlePruningBoundsRadius * _particlePruningBoundsRadius;
+    }
+
+    void UpdateParticleEmissionSource()
+    {
+        // point the fan at the bounding region and update the plane
+        transform.LookAt(_particlePruningBoundsOrigin);
+        transform.position = _particlePruningBoundsOrigin - transform.forward * _particlePruningBoundsRadius;
+        _fanSurfacePlane.SetNormalAndPosition(transform.forward, transform.position);
+    }
+
     void UpdateWindParticles()
     {
-        for (int i = 0; i < _particles.Count; i++)
+        for (int i = 0; i < _activeParticleCount; i++)
         {
             WindParticle particle = _particles[i];
             if (!particle.alive) { continue; }
@@ -106,7 +128,6 @@ public class WindSource : MonoBehaviour
                     // we're done here
                     particle.alive = false;
                     _particles[i] = particle;
-
                     continue;
                 }
             }
@@ -146,7 +167,7 @@ public class WindSource : MonoBehaviour
                 // reduce particle velocity
                 particle.velocity *= 1 - energyTransfer;
                 particle.dir = reflection;
-                particle.alive = particle.velocity > 1e-5f;
+                particle.alive = particle.velocity > minVelocity;
 
                 // update the particle position along the path up to collision and then the 
                 // remaining distance along the reflection
@@ -185,14 +206,34 @@ public class WindSource : MonoBehaviour
         {
             _secondsUntilNextParticlePruning = _particlePruningPeriod;
 
-            foreach (WindParticle p in _particles)
+            if (renderParticlePaths)
             {
-                if (!p.alive)
+                for (int i = 0, N = _particles.Length; i < N; i++)
                 {
-                    _particlePaths.Remove(p.id);
+                    if (!_particles[i].alive && _particles[i].id > 0)
+                    {
+                        _particlePaths.Remove(_particles[i].id);
+                    }
                 }
             }
-            _particles = _particles.Where((p) => { return p.alive; }).ToList();
+
+            // TODO: Find an equivalent of c++ std::partition
+            Array.Sort(_particles, (a, b) => {
+                if (a.alive && b.alive) return 0;
+                else if (a.alive) return -1;
+                return 1;
+            });
+
+            // since we don't have std::partition, find the first dead particle and
+            // count that as the end of the active particle list
+            for (int i = 0, N = _particles.Length; i < N; i++)
+            {
+                if (!_particles[i].alive)
+                {
+                    _activeParticleCount = i;
+                    break;
+                }
+            }
         }
     }
 
@@ -225,27 +266,40 @@ public class WindSource : MonoBehaviour
 
         Vector3 a = _fanSurfacePlane.ClosestPointOnPlane(bell.Top);
         Vector3 b = _fanSurfacePlane.ClosestPointOnPlane(bell.Bottom);
-        Vector3 o = Vector3.Lerp(a, b, Random.Range(0f, 1f));
-        Vector2 c = Random.insideUnitCircle * bell.Radius;
+        Vector3 o = Vector3.Lerp(a, b, UnityEngine.Random.Range(0f, 1f));
+        Vector2 c = UnityEngine.Random.insideUnitCircle * bell.Radius;
         Vector3 e = o + transform.TransformDirection(new Vector3(c.x, c.y, 0));
         return e;
     }
 
     void EmitWindParticle(Vector3 startPosition, Vector3 startDirection)
     {
-        WindParticle p = new WindParticle()
+        if (_activeParticleCount < _particles.Length)
         {
-            id = _particleId++,
-            position = startPosition,
-            dir = startDirection,
-            velocity = windVelocity,
-            mass = windParticleMass,
-            alive = true,
-            color = Color.black,
-            hasEnteredTargetBounds = false,
-        };
+            int id = InitWindParticle(ref _particles[_activeParticleCount], startPosition, startDirection);
+            _activeParticleCount++;
+            
+            _particlePaths.Add(id, (new Vector3[] { startPosition }).ToList());
+        }
+        else
+        {
+            Debug.LogFormat("[EmitWindParticle] - particle buffer is full");
+        }
+    }
 
-        _particlePaths.Add(p.id, (new Vector3[] { startPosition }).ToList());
-        _particles.Add(p);
+    private int InitWindParticle(ref WindParticle p, Vector3 startPosition, Vector3 startDirection)
+    {
+        p.id = _particleId;
+        p.position = startPosition;
+        p.dir = startDirection;
+        p.velocity = windVelocity;
+        p.mass = windParticleMass;
+        p.alive = true;
+        p.color = Color.black;
+        p.hasEnteredTargetBounds = false;
+
+        _particleId++;
+        
+        return p.id;
     }
 }
