@@ -52,9 +52,11 @@ public class WindSource : MonoBehaviour
 
     void Update()
     {
-        // update the bounding region
+        //
+        // update the bounding region to fit the bells
+        //
         Bounds b = TransformExtensions.CalculateBounds(_bells);
-        _particlePruningBoundsRadius = Mathf.Max(new float[] { b.size.x * 2, b.size.y * 2, b.size.z * 2});
+        _particlePruningBoundsRadius = b.size.magnitude;
         _particlePruningBoundsOrigin = b.center;
         _particlePruningBoundsRadius2 = _particlePruningBoundsRadius * _particlePruningBoundsRadius;
 
@@ -215,8 +217,12 @@ public class WindSource : MonoBehaviour
 
     Vector3 EmissionPointForChimeBell(ChimeBell bell)
     {
-        // project bell's A and B points to our emission plane
-        // generate a point in a circle of radius == chime bell radius, a random distance along the line from a to b
+        //
+        // project bell's A and B points to our emission plane,
+        // generate a point in a circle of radius == chime bell radius, 
+        // a random distance along the line from a to b
+        //
+
         Vector3 a = _fanSurfacePlane.ClosestPointOnPlane(bell.Top);
         Vector3 b = _fanSurfacePlane.ClosestPointOnPlane(bell.Bottom);
         Vector3 o = Vector3.Lerp(a, b, Random.Range(0f, 1f));
@@ -236,7 +242,6 @@ public class WindSource : MonoBehaviour
             mass = windParticleMass,
             alive = true,
             color = Color.black,
-            // color = Random.ColorHSV(0, 1, 0.9f, 1f, 1f, 1f),
             hasEnteredTargetBounds = false,
         };
 

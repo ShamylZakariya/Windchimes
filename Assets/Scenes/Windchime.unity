@@ -241,7 +241,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 1, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0, y: -1.3999999, z: 0.25}
+  m_ConnectedAnchor: {x: 0, y: -1.3999999, z: 0.14999999}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 1, z: 0}
   m_TwistLimitSpring:
@@ -446,7 +446,7 @@ GameObject:
   - component: {fileID: 297991639}
   - component: {fileID: 297991638}
   m_Layer: 8
-  m_Name: Chime Bell
+  m_Name: Chime Bell A
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -622,7 +622,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 312814840}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.05}
+  m_LocalPosition: {x: 0, y: 0, z: -0.03}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 926875853}
@@ -777,7 +777,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 575747469}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.05}
+  m_LocalPosition: {x: 0, y: 0, z: 0.03}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 104236379}
@@ -924,7 +924,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 1, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0, y: -1.3999999, z: -0.25}
+  m_ConnectedAnchor: {x: 0, y: -1.3999999, z: -0.14999999}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 1, z: 0}
   m_TwistLimitSpring:
@@ -1427,8 +1427,8 @@ MonoBehaviour:
   windChime: {fileID: 1063716888}
   windSourceVisual: {fileID: 1084493546}
   windVelocity: 0.5
-  windParticleMass: 0.01
-  particlesPerSecond: 0
+  windParticleMass: 0.005
+  particlesPerSecond: 200
   renderParticlePaths: 0
   windTargetLayer:
     serializedVersion: 2
@@ -1449,7 +1449,7 @@ GameObject:
   - component: {fileID: 1597019506}
   - component: {fileID: 1597019505}
   m_Layer: 8
-  m_Name: Chime Bell
+  m_Name: Chime Bell B
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1463,8 +1463,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1597019503}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.159, z: 0}
-  m_LocalScale: {x: 0.05, y: 0.1, z: 0.05}
+  m_LocalPosition: {x: 0, y: -0.228, z: 0}
+  m_LocalScale: {x: 0.05, y: 0.16757, z: 0.05}
   m_Children: []
   m_Father: {fileID: 312814841}
   m_RootOrder: 1
@@ -1480,7 +1480,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 1, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0, y: -1.1800003, z: 0}
+  m_ConnectedAnchor: {x: 0, y: -1.2085998, z: 0}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 1, z: 0}
   m_TwistLimitSpring:
