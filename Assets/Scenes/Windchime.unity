@@ -1430,7 +1430,7 @@ MonoBehaviour:
   windVelocity: 0.5
   minVelocity: 0.001
   windParticleMass: 0.005
-  particlesPerSecond: 200
+  particlesPerSecond: 0
   windTargetLayer:
     serializedVersion: 2
     m_Bits: 256

@@ -35,7 +35,7 @@ public class WindSource : MonoBehaviour
     private float _particlePruningBoundsRadius2;
     private float _secondsUntilNextParticle = 0;
     private RaycastHit[] _raycastHits;
-    private ChimeBell[] _bells;
+    private Bell[] _bells;
     private Plane _fanSurfacePlane;
 
     void Start()
@@ -44,7 +44,7 @@ public class WindSource : MonoBehaviour
         // collect our bells
         //
 
-        _bells = windChime.GetComponentsInChildren<ChimeBell>().ToArray();
+        _bells = windChime.GetComponentsInChildren<Bell>().ToArray();
         _raycastHits = new RaycastHit[_bells.Length];
 
         _secondsUntilNextParticlePruning = _particlePruningPeriod;
@@ -227,7 +227,8 @@ public class WindSource : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            EmitWindParticle(EmissionPointForChimeBell(_bells[0]), transform.forward);
+            Vector3 p = _bells[0].GenerateRandomEmissionPointOnPlane(_fanSurfacePlane);
+            EmitWindParticle(p, transform.forward);
         }
 
         _secondsUntilNextParticle -= Time.deltaTime;
@@ -235,28 +236,14 @@ public class WindSource : MonoBehaviour
         {
             _secondsUntilNextParticle = 1 / particlesPerSecond;
 
-            foreach (ChimeBell bell in _bells)
+            foreach (Bell bell in _bells)
             {
-                EmitWindParticle(EmissionPointForChimeBell(bell), transform.forward);
+                Vector3 p = bell.GenerateRandomEmissionPointOnPlane(_fanSurfacePlane);
+                EmitWindParticle(p, transform.forward);
             }
         }
     }
 
-    Vector3 EmissionPointForChimeBell(ChimeBell bell)
-    {
-        //
-        // project bell's A and B points to our emission plane,
-        // generate a point in a circle of radius == chime bell radius, 
-        // a random distance along the line from a to b
-        //
-
-        Vector3 a = _fanSurfacePlane.ClosestPointOnPlane(bell.Top);
-        Vector3 b = _fanSurfacePlane.ClosestPointOnPlane(bell.Bottom);
-        Vector3 o = Vector3.Lerp(a, b, UnityEngine.Random.Range(0f, 1f));
-        Vector2 c = UnityEngine.Random.insideUnitCircle * bell.Radius;
-        Vector3 e = o + transform.TransformDirection(new Vector3(c.x, c.y, 0));
-        return e;
-    }
 
     void EmitWindParticle(Vector3 startPosition, Vector3 startDirection)
     {
