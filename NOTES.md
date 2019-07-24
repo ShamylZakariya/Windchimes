@@ -4,6 +4,7 @@
 - While I've written some raycasting ops that should run safely in Unity's Job System (e.g., self-contained and threadsafe), looks like the Job System supports raycasts, so for now we're using built-in Physics.Raycast with a layermask for matching only the wind chime layer.
 
 ## Phase 1
+### Done
 - Use simple raycasting to walk spread-out parallel rays in short hops, bearing some small mass, to the wind chimes. 
 - Let the rays bounce and hit other chimes.
 - Observe collisions between chimes.
