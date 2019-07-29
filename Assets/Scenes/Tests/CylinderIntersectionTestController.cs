@@ -5,13 +5,13 @@ using UnityEngine;
 
 public class CylinderIntersectionTestController : MonoBehaviour
 {
-    [SerializeField] GameObject cylinder;
-    [SerializeField] Transform cylinderEndpointA;
-    [SerializeField] Transform cylinderEndpointB;
-    [SerializeField] Transform cylinderRadius;
+    [SerializeField] GameObject cylinder = null;
+    [SerializeField] Transform cylinderEndpointA = null;
+    [SerializeField] Transform cylinderEndpointB = null;
+    [SerializeField] Transform cylinderRadius = null;
 
-    [SerializeField] Transform ray_a;
-    [SerializeField] Transform ray_b;
+    [SerializeField] Transform ray_a = null;
+    [SerializeField] Transform ray_b = null;
     [SerializeField] float _spinRate = 5f;
 
     private CapsuleCollider _collider;

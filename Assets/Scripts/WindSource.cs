@@ -19,7 +19,7 @@ public class WindSource : MonoBehaviour
     [SerializeField] float minVelocity = 1e-3f;
     [SerializeField] float windParticleMass = 0.001f;
     [SerializeField] float particlesPerSecond = 20;
-    [SerializeField] LayerMask windTargetLayer;
+    [SerializeField] LayerMask windTargetLayer = 0;
 
 
     private WindParticle[] _particles;
