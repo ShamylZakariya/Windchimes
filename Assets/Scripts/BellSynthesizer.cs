@@ -59,10 +59,13 @@ public class BellSynthesizer : MonoBehaviour
     //
 
     private List<BellPrototype> _activeBells = new List<BellPrototype>();
+    private List<BellPrototype> _queuedBells = new List<BellPrototype>();
 
     private AudioSource _source;
     private float _sampleRate = 0;
     private float _secondsUntilNextCleanup = 0;
+    private bool _generatingTone;
+    private object _generatingToneLock = new object();
     private const float CleanupPerdiod = 1f;
     private const float TwoPi = Mathf.PI * 2;
 
@@ -77,22 +80,26 @@ public class BellSynthesizer : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Play(bellPrototype);
-        }
-
         _secondsUntilNextCleanup -= Time.deltaTime;
         if (_secondsUntilNextCleanup <= 0)
         {
             _secondsUntilNextCleanup += CleanupPerdiod;
-            int c = _activeBells.Count;
             _activeBells = _activeBells.Where((i) => !i.completed).ToList();
-            if (_activeBells.Count < c)
+        }
+
+        if (_queuedBells.Any())
+        {
+            lock (_generatingToneLock)
             {
-                Debug.LogFormat("Pruned {0} tone bundles", (c - _activeBells.Count));
+                _activeBells.AddRange(_queuedBells);
+                _queuedBells.Clear();
             }
         }
+    }
+
+    public void Play()
+    {
+        Play(bellPrototype);
     }
 
     public void Play(BellPrototype bp)
@@ -110,7 +117,11 @@ public class BellSynthesizer : MonoBehaviour
             bp.tones[i] = swc;
         }
 
-        _activeBells.Add(bp);
+        lock (_generatingToneLock)
+        {
+            if (_generatingTone) { _queuedBells.Add(bp); }
+            else { _activeBells.Add(bp); }
+        }
 
         if (!_source.isPlaying)
         {
@@ -120,55 +131,61 @@ public class BellSynthesizer : MonoBehaviour
 
     void OnAudioFilterRead(float[] data, int channels)
     {
-        double now = AudioSettings.dspTime;
-        foreach(BellPrototype toneBundle in _activeBells)
+        lock (_generatingToneLock)
         {
-            if (toneBundle.completed) continue;
+            _generatingTone = true;
 
-            double dspTimeIncrement = 1 / ((double)_sampleRate * toneBundle.envelopeTimeScale);
-            int expiredCount = 0;
-
-            for (int t = 0, tEnd = toneBundle.tones.Length; t < tEnd; t++)
+            double now = AudioSettings.dspTime;
+            foreach (BellPrototype toneBundle in _activeBells)
             {
-                Tone tone = toneBundle.tones[t];
+                if (toneBundle.completed) continue;
 
-                if (!tone.started)
+                double dspTimeIncrement = 1 / ((double)_sampleRate * toneBundle.envelopeTimeScale);
+                int expiredCount = 0;
+
+                for (int t = 0, tEnd = toneBundle.tones.Length; t < tEnd; t++)
                 {
-                    tone.startTime = now;
-                    tone.started = true;
-                }
+                    Tone tone = toneBundle.tones[t];
 
-                double age = (now - tone.startTime) / toneBundle.envelopeTimeScale;
-                float increment = toneBundle.frequencyMultiplier * tone.frequency * TwoPi / _sampleRate;
-
-                for (int i = 0, iEnd = data.Length; i < iEnd; i += channels)
-                {
-                    tone.phase += increment;
-                    float envelope = Mathf.Max(tone.envelope.Evaluate((float)age), 0);
-                    float value = (envelope * tone.gain * Mathf.Sin(tone.phase + tone.phaseOffset));
-
-                    age += dspTimeIncrement;
-                    data[i] += value;
-
-                    if (channels == 2)
+                    if (!tone.started)
                     {
-                        data[i + 1] += value;
+                        tone.startTime = now;
+                        tone.started = true;
+                    }
+
+                    double age = (now - tone.startTime) / toneBundle.envelopeTimeScale;
+                    float increment = toneBundle.frequencyMultiplier * tone.frequency * TwoPi / _sampleRate;
+
+                    for (int i = 0, iEnd = data.Length; i < iEnd; i += channels)
+                    {
+                        tone.phase += increment;
+                        float envelope = Mathf.Max(tone.envelope.Evaluate((float)age), 0);
+                        float value = (envelope * tone.gain * Mathf.Sin(tone.phase + tone.phaseOffset));
+
+                        age += dspTimeIncrement;
+                        data[i] += value;
+
+                        if (channels == 2)
+                        {
+                            data[i + 1] += value;
+                        }
+                    }
+
+                    toneBundle.tones[t] = tone;
+
+                    if (age > tone.duration)
+                    {
+                        expiredCount++;
                     }
                 }
 
-                toneBundle.tones[t] = tone;
-
-                if (age > tone.duration)
+                if (expiredCount == toneBundle.tones.Length)
                 {
-                    expiredCount++;
+                    toneBundle.completed = true;
                 }
             }
 
-            if (expiredCount == toneBundle.tones.Length)
-            {
-                toneBundle.completed = true;
-            }
+            _generatingTone = false;
         }
-
     }
 }

@@ -4,15 +4,24 @@ using UnityEngine;
 
 public class ToneGenerationController : MonoBehaviour
 {
-    // Start is called before the first frame update
     void Start()
     {
 
     }
 
-    // Update is called once per frame
     void Update()
     {
-
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray mousePickRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(mousePickRay, out RaycastHit hit))
+            {
+                BellSynthesizer bell = hit.collider.gameObject.GetComponent<BellSynthesizer>();
+                if (bell != null)
+                {
+                    bell.Play();
+                }
+            }
+        }
     }
 }
