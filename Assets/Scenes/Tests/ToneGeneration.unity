@@ -120,7 +120,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &251449441
+--- !u!1 &459343158
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -128,284 +128,76 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 251449445}
-  - component: {fileID: 251449444}
-  - component: {fileID: 251449443}
-  - component: {fileID: 251449442}
-  - component: {fileID: 251449446}
-  - component: {fileID: 251449447}
-  - component: {fileID: 251449448}
-  - component: {fileID: 251449450}
-  - component: {fileID: 251449451}
+  - component: {fileID: 459343167}
+  - component: {fileID: 459343166}
+  - component: {fileID: 459343165}
+  - component: {fileID: 459343164}
+  - component: {fileID: 459343163}
+  - component: {fileID: 459343162}
+  - component: {fileID: 459343161}
+  - component: {fileID: 459343160}
+  - component: {fileID: 459343159}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Synth
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!65 &251449442
-BoxCollider:
+--- !u!164 &459343159
+AudioReverbFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 251449441}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_GameObject: {fileID: 459343158}
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!23 &251449443
-MeshRenderer:
+  m_DryLevel: 0
+  m_Room: -1000
+  m_RoomHF: -151
+  m_DecayTime: 7.56
+  m_DecayHFRatio: 0.91
+  m_ReflectionsLevel: -626
+  m_ReverbLevel: 774
+  m_ReverbDelay: 0.03
+  m_Diffusion: 100
+  m_Density: 100
+  m_HFReference: 5000
+  m_RoomLF: 0
+  m_LFReference: 250
+  m_ReflectionsDelay: 0
+  m_ReverbPreset: 26
+--- !u!170 &459343160
+AudioDistortionFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 251449441}
+  m_GameObject: {fileID: 459343158}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
---- !u!33 &251449444
-MeshFilter:
+  m_DistortionLevel: 0.1
+--- !u!166 &459343161
+AudioChorusFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 251449441}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &251449445
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 251449441}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &251449446
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 251449441}
+  m_GameObject: {fileID: 459343158}
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bae6f833073f24d788d7030f0a580ca0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sines:
-  - frequency: 680
-    gain: 0.3
-    phaseOffset: 0
-    envelope:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0.0000011469238
-        value: 0.99892455
-        inSlope: -3.9015741
-        outSlope: -3.9015741
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0.04053834
-      - serializedVersion: 3
-        time: 0.50041103
-        value: -0.0011525704
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    loop: 0
-  - frequency: 540
-    gain: 0.2
-    phaseOffset: 0
-    envelope:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0.0022277832
-        value: 0.9965668
-        inSlope: 0.24100602
-        outSlope: 0.24100602
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0.08474325
-      - serializedVersion: 3
-        time: 0.6588888
-        value: -0.0035329415
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    loop: 0
-  - frequency: 420
-    gain: 0.2
-    phaseOffset: 0
-    envelope:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0.0034370422
-        value: 0.99894714
-        inSlope: -0.0671037
-        outSlope: -0.0671037
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0.12088843
-      - serializedVersion: 3
-        time: 1.0175314
-        value: 0.0012278007
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    loop: 0
-  - frequency: 300
-    gain: 0.2
-    phaseOffset: 0
-    envelope:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0.0033798218
-        value: 0.9989395
-        inSlope: 0.02106825
-        outSlope: 0.02106825
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0.09306324
-      - serializedVersion: 3
-        time: 2.0016928
-        value: -0.0011525704
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    loop: 0
-  - frequency: 200
-    gain: 0.2
-    phaseOffset: 0
-    envelope:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0.0038294124
-        value: 1.0021638
-        inSlope: -1.6663538
-        outSlope: -1.6663538
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0.03788907
-      - serializedVersion: 3
-        time: 2.2670126
-        value: 0
-        inSlope: -0.110542335
-        outSlope: -0.110542335
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.06630587
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    loop: 0
-  - frequency: 100
-    gain: 0.2
-    phaseOffset: 0
-    envelope:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0.0000016912818
-        value: 0.998915
-        inSlope: -1.2496394
-        outSlope: -1.2496394
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0.037889026
-      - serializedVersion: 3
-        time: 2.78337
-        value: 0
-        inSlope: -0.038853537
-        outSlope: -0.038853537
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.06630594
-        outWeight: 0.33333334
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    loop: 0
-  frequencyMultiplier: 4
-  envelopeTimeScale: 1
---- !u!82 &251449447
+  m_DryMix: 0.5
+  m_WetMix1: 0.5
+  m_WetMix2: 0.5
+  m_WetMix3: 0.5
+  m_Delay: 40
+  m_Rate: 0.8
+  m_Depth: 0.5
+--- !u!82 &459343162
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 251449441}
+  m_GameObject: {fileID: 459343158}
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
@@ -495,53 +287,256 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!166 &251449448
-AudioChorusFilter:
+--- !u!114 &459343163
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 251449441}
+  m_GameObject: {fileID: 459343158}
   m_Enabled: 1
-  m_DryMix: 0.5
-  m_WetMix1: 0.5
-  m_WetMix2: 0.5
-  m_WetMix3: 0.5
-  m_Delay: 40
-  m_Rate: 0.8
-  m_Depth: 0.5
---- !u!170 &251449450
-AudioDistortionFilter:
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30973712ab42846b5a26fccf1fdf50a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bellPrototype:
+    tones:
+    - frequency: 680
+      gain: 0.2
+      phaseOffset: 0
+      envelope:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 1
+          inSlope: -2.8737128
+          outSlope: -2.8737128
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0.037099987
+        - serializedVersion: 3
+          time: 0.3
+          value: 0
+          inSlope: 0.0016037512
+          outSlope: 0.0016037512
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.105666995
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 0
+    - frequency: 540
+      gain: 0.2
+      phaseOffset: 0
+      envelope:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 1
+          inSlope: -2.8737128
+          outSlope: -2.8737128
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0.037099987
+        - serializedVersion: 3
+          time: 0.5
+          value: 0
+          inSlope: 0.0016037512
+          outSlope: 0.0016037512
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.105666995
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 0
+    - frequency: 420
+      gain: 0.2
+      phaseOffset: 0
+      envelope:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 1
+          inSlope: -2.8737128
+          outSlope: -2.8737128
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0.037099987
+        - serializedVersion: 3
+          time: 0.8
+          value: 0
+          inSlope: 0.0016037512
+          outSlope: 0.0016037512
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.105666995
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 0
+    - frequency: 300
+      gain: 0.2
+      phaseOffset: 0
+      envelope:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 1
+          inSlope: -1.8730197
+          outSlope: -1.8730197
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0.06275231
+        - serializedVersion: 3
+          time: 1.5
+          value: 0
+          inSlope: 0.0016037512
+          outSlope: 0.0016037512
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.105666995
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 0
+    - frequency: 200
+      gain: 0.2
+      phaseOffset: 0
+      envelope:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 1
+          inSlope: -1.4410833
+          outSlope: -1.4410833
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0.07824711
+        - serializedVersion: 3
+          time: 2
+          value: 0
+          inSlope: 0.0016037512
+          outSlope: 0.0016037512
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.105666995
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 0
+    - frequency: 100
+      gain: 0.2
+      phaseOffset: 0
+      envelope:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 1
+          inSlope: -1.0558133
+          outSlope: -1.0558133
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0.062610775
+        - serializedVersion: 3
+          time: 3
+          value: 0
+          inSlope: 0.0016037512
+          outSlope: 0.0016037512
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.105666995
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 0
+    frequencyMultiplier: 4
+    envelopeTimeScale: 0.6
+--- !u!65 &459343164
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 251449441}
+  m_GameObject: {fileID: 459343158}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
   m_Enabled: 1
-  m_DistortionLevel: 0.1
---- !u!164 &251449451
-AudioReverbFilter:
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &459343165
+MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 251449441}
+  m_GameObject: {fileID: 459343158}
   m_Enabled: 1
-  m_DryLevel: 0
-  m_Room: -1000
-  m_RoomHF: -151
-  m_DecayTime: 7.56
-  m_DecayHFRatio: 0.91
-  m_ReflectionsLevel: -626
-  m_ReverbLevel: 774
-  m_ReverbDelay: 0.03
-  m_Diffusion: 100
-  m_Density: 100
-  m_HFReference: 5000
-  m_RoomLF: 0
-  m_LFReference: 250
-  m_ReflectionsDelay: 0
-  m_ReverbPreset: 26
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!33 &459343166
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 459343158}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &459343167
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 459343158}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &591823310
 GameObject:
   m_ObjectHideFlags: 0
