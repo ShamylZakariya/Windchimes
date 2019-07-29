@@ -231,6 +231,7 @@ MonoBehaviour:
   sines:
   - frequency: 680
     gain: 0.3
+    phaseOffset: 0
     envelope:
       serializedVersion: 2
       m_Curve:
@@ -258,6 +259,7 @@ MonoBehaviour:
     loop: 0
   - frequency: 540
     gain: 0.2
+    phaseOffset: 0
     envelope:
       serializedVersion: 2
       m_Curve:
@@ -285,6 +287,7 @@ MonoBehaviour:
     loop: 0
   - frequency: 420
     gain: 0.2
+    phaseOffset: 0
     envelope:
       serializedVersion: 2
       m_Curve:
@@ -312,6 +315,7 @@ MonoBehaviour:
     loop: 0
   - frequency: 300
     gain: 0.2
+    phaseOffset: 0
     envelope:
       serializedVersion: 2
       m_Curve:
@@ -339,26 +343,27 @@ MonoBehaviour:
     loop: 0
   - frequency: 200
     gain: 0.2
+    phaseOffset: 0
     envelope:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
         time: 0.0038294124
         value: 1.0021638
-        inSlope: 0.05617424
-        outSlope: 0.05617424
+        inSlope: -1.6663538
+        outSlope: -1.6663538
         tangentMode: 0
         weightedMode: 0
         inWeight: 0
-        outWeight: 0.0862944
+        outWeight: 0.03788907
       - serializedVersion: 3
         time: 2.2670126
-        value: -0.0011525704
-        inSlope: 0
-        outSlope: 0
+        value: 0
+        inSlope: -0.110542335
+        outSlope: -0.110542335
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0
+        inWeight: 0.06630587
         outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
@@ -366,32 +371,34 @@ MonoBehaviour:
     loop: 0
   - frequency: 100
     gain: 0.2
+    phaseOffset: 0
     envelope:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
         time: 0.0000016912818
         value: 0.998915
-        inSlope: -0.014096359
-        outSlope: -0.014096359
+        inSlope: -1.2496394
+        outSlope: -1.2496394
         tangentMode: 0
         weightedMode: 0
         inWeight: 0
-        outWeight: 0.082769714
+        outWeight: 0.037889026
       - serializedVersion: 3
         time: 2.78337
-        value: -0.0129323555
-        inSlope: 0
-        outSlope: 0
+        value: 0
+        inSlope: -0.038853537
+        outSlope: -0.038853537
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0
-        outWeight: 0
+        inWeight: 0.06630594
+        outWeight: 0.33333334
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
     loop: 0
-  frequencyMultiplier: 1.5
+  frequencyMultiplier: 4
+  envelopeTimeScale: 1
 --- !u!82 &251449447
 AudioSource:
   m_ObjectHideFlags: 0

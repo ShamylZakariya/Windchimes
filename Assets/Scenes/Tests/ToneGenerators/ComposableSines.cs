@@ -23,7 +23,8 @@ public class ComposableSines : MonoBehaviour
 
         internal float phase;
         internal double startTime;
-        internal double endTime;
+        internal double duration;
+        internal bool started;
     }
 
     [SerializeField]
@@ -32,6 +33,9 @@ public class ComposableSines : MonoBehaviour
     [SerializeField]
     float frequencyMultiplier = 1f;
 
+    [SerializeField]
+    float envelopeTimeScale = 1f;
+
     //
     //  Private statue
     //
@@ -39,8 +43,6 @@ public class ComposableSines : MonoBehaviour
     private AudioSource _source;
     private float _sampleRate = 0;
     const float TWO_PI = Mathf.PI * 2;
-    bool _toneCompleted;
-
 
     void Start()
     {
@@ -52,21 +54,9 @@ public class ComposableSines : MonoBehaviour
 
     void Update()
     {
-        if (_toneCompleted && _source.isPlaying)
-        {
-            _source.Stop();
-        }
-
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (!_source.isPlaying)
-            {
-                PlayTone();
-            }
-            else
-            {
-                _source.Stop();
-            }
+            PlayTone();
         }
     }
 
@@ -76,59 +66,58 @@ public class ComposableSines : MonoBehaviour
         {
             SineWaveSource swc = sines[i];
             swc.phase = 0;
-            swc.startTime = AudioSettings.dspTime;
             swc.phaseOffset = i * TWO_PI / sines.Length;
-
-            float duration = swc.envelope[swc.envelope.length - 1].time;
-            swc.endTime = swc.startTime + (double)duration * 1.5; // some fudge
-
+            swc.duration = swc.envelope[swc.envelope.length - 1].time - swc.envelope[0].time;
+            swc.started = false;
             sines[i] = swc;
         }
-        _source.Play();
-        _toneCompleted = false;
+
+        if (!_source.isPlaying)
+        {
+            _source.Play();
+        }
     }
 
     void OnAudioFilterRead(float[] data, int channels)
     {
         double now = AudioSettings.dspTime;
-        double dspTimeIncrement = 1.0 / (double)_sampleRate;
-        bool didGenerateAudio = false;
+        double dspTimeIncrement = 1 / ((double)_sampleRate * envelopeTimeScale);
+        int expiredCount = 0;
 
         for (int s = 0, sEnd = sines.Length; s < sEnd; s++)
         {
             SineWaveSource swc = sines[s];
-            if (!swc.loop && now >= swc.endTime) continue;
 
-            float increment = frequencyMultiplier * swc.frequency * 2f * Mathf.PI / _sampleRate;
+            if (!swc.started)
+            {
+                swc.startTime = now;
+                swc.started = true;
+            }
 
-            double age = AudioSettings.dspTime - swc.startTime;
+            double age = (now - swc.startTime) / envelopeTimeScale;
+            float increment = frequencyMultiplier * swc.frequency * TWO_PI / _sampleRate;
 
             for (int i = 0, iEnd = data.Length; i < iEnd; i += channels)
             {
-                swc.phase = swc.phase + increment;
-                if (swc.phase > TWO_PI) { swc.phase = 0; }
-
-                float envelope = swc.envelope.Evaluate((float)age);
+                swc.phase += increment;
+                float envelope = Mathf.Max(swc.envelope.Evaluate((float)age), 0);
                 float value = (envelope * swc.gain * Mathf.Sin(swc.phase + swc.phaseOffset));
 
+                age += dspTimeIncrement;
                 data[i] += value;
 
                 if (channels == 2)
                 {
                     data[i + 1] += value;
                 }
-
-                age += dspTimeIncrement;
             }
 
             sines[s] = swc;
-            didGenerateAudio = true;
-        }
 
-        if (!didGenerateAudio)
-        {
-            Debug.LogFormat("[OnAudioFilterRead] - done generating tones; stopping audio source...");
-            _toneCompleted = true;
+            if (!swc.loop && age > swc.duration)
+            {
+                expiredCount++;
+            }
         }
     }
 }
