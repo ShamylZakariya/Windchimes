@@ -31,6 +31,7 @@ public class BellSynthesizer : MonoBehaviour
     [Serializable]
     public class BellPrototype
     {
+        [SerializeField]
         public Tone[] tones;
 
         [SerializeField]
@@ -39,13 +40,17 @@ public class BellSynthesizer : MonoBehaviour
         [SerializeField]
         public float envelopeTimeScale = 1f;
 
+        [SerializeField]
+        public AnimationCurve masterEnvelope;
+
         public BellPrototype Clone()
         {
             return new BellPrototype()
             {
                 tones = tones.Select((i) => i).ToArray(),
                 frequencyMultiplier = this.frequencyMultiplier,
-                envelopeTimeScale = this.envelopeTimeScale
+                envelopeTimeScale = this.envelopeTimeScale,
+                masterEnvelope = this.masterEnvelope
             };
         }
 
@@ -136,16 +141,16 @@ public class BellSynthesizer : MonoBehaviour
             _generatingTone = true;
 
             double now = AudioSettings.dspTime;
-            foreach (BellPrototype toneBundle in _activeBells)
+            foreach (BellPrototype bell in _activeBells)
             {
-                if (toneBundle.completed) continue;
+                if (bell.completed) continue;
 
-                double dspTimeIncrement = 1 / ((double)_sampleRate * toneBundle.envelopeTimeScale);
+                double dspTimeIncrement = 1 / ((double)_sampleRate * bell.envelopeTimeScale);
                 int expiredCount = 0;
 
-                for (int t = 0, tEnd = toneBundle.tones.Length; t < tEnd; t++)
+                for (int b = 0, bEnd = bell.tones.Length; b < bEnd; b++)
                 {
-                    Tone tone = toneBundle.tones[t];
+                    Tone tone = bell.tones[b];
 
                     if (!tone.started)
                     {
@@ -153,13 +158,13 @@ public class BellSynthesizer : MonoBehaviour
                         tone.started = true;
                     }
 
-                    double age = (now - tone.startTime) / toneBundle.envelopeTimeScale;
-                    float increment = toneBundle.frequencyMultiplier * tone.frequency * TwoPi / _sampleRate;
+                    double age = (now - tone.startTime) / bell.envelopeTimeScale;
+                    float increment = bell.frequencyMultiplier * tone.frequency * TwoPi / _sampleRate;
 
                     for (int i = 0, iEnd = data.Length; i < iEnd; i += channels)
                     {
                         tone.phase += increment;
-                        float envelope = Mathf.Max(tone.envelope.Evaluate((float)age), 0);
+                        float envelope = Mathf.Max(tone.envelope.Evaluate((float)age) * bell.masterEnvelope.Evaluate((float)age), 0);
                         float value = (envelope * tone.gain * Mathf.Sin(tone.phase + tone.phaseOffset));
 
                         age += dspTimeIncrement;
@@ -171,7 +176,7 @@ public class BellSynthesizer : MonoBehaviour
                         }
                     }
 
-                    toneBundle.tones[t] = tone;
+                    bell.tones[b] = tone;
 
                     if (age > tone.duration)
                     {
@@ -179,9 +184,9 @@ public class BellSynthesizer : MonoBehaviour
                     }
                 }
 
-                if (expiredCount == toneBundle.tones.Length)
+                if (expiredCount == bell.tones.Length)
                 {
-                    toneBundle.completed = true;
+                    bell.completed = true;
                 }
             }
 
