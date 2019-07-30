@@ -26,6 +26,9 @@ At the very minimum, we need to be able to compose pairs of sine waves and envel
     - so far this works but needs a little more:
         - a phase offset per-channel
 
+#### Neat Ideas
+Take a short clip of the kind of tubular bell sound I want, run it through some kind of FFT analysis, and determine which frequencies are making it up. What software would I need?
+
 
 ## Phase 3
 - Use Job System to run these rays in parallel

@@ -304,191 +304,29 @@ MonoBehaviour:
     - frequency: 700
       gain: 0.2
       phaseOffset: 0
-      envelope:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 3
-          time: 0
-          value: 1
-          inSlope: -2.8737128
-          outSlope: -2.8737128
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0.037099987
-        - serializedVersion: 3
-          time: 0.3
-          value: 0
-          inSlope: 0.0016037512
-          outSlope: 0.0016037512
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0.105666995
-          outWeight: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 0
+      duration: 0.2
     - frequency: 680
       gain: 0.2
       phaseOffset: 0
-      envelope:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 3
-          time: 0
-          value: 1
-          inSlope: -2.8737128
-          outSlope: -2.8737128
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0.037099987
-        - serializedVersion: 3
-          time: 0.5
-          value: 0
-          inSlope: 0.0016037512
-          outSlope: 0.0016037512
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0.105666995
-          outWeight: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 0
+      duration: 0.6
     - frequency: 660
       gain: 0.2
       phaseOffset: 0
-      envelope:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 3
-          time: 0
-          value: 1
-          inSlope: -2.8737128
-          outSlope: -2.8737128
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0.037099987
-        - serializedVersion: 3
-          time: 0.8
-          value: 0
-          inSlope: 0.0016037512
-          outSlope: 0.0016037512
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0.105666995
-          outWeight: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 0
+      duration: 1
     - frequency: 640
       gain: 0.2
       phaseOffset: 0
-      envelope:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 3
-          time: 0
-          value: 1
-          inSlope: -1.8730197
-          outSlope: -1.8730197
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0.06275231
-        - serializedVersion: 3
-          time: 1.5
-          value: 0
-          inSlope: 0.0016037512
-          outSlope: 0.0016037512
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0.105666995
-          outWeight: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 0
+      duration: 2
     - frequency: 620
       gain: 0.2
       phaseOffset: 0
-      envelope:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 3
-          time: 0
-          value: 1
-          inSlope: -1.4410833
-          outSlope: -1.4410833
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0.07824711
-        - serializedVersion: 3
-          time: 2
-          value: 0
-          inSlope: 0.0016037512
-          outSlope: 0.0016037512
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0.105666995
-          outWeight: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 0
+      duration: 4
     - frequency: 100
       gain: 0.2
       phaseOffset: 0
-      envelope:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 3
-          time: 0
-          value: 1
-          inSlope: -1.0558133
-          outSlope: -1.0558133
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0.062610775
-        - serializedVersion: 3
-          time: 3
-          value: 0
-          inSlope: 0.0016037512
-          outSlope: 0.0016037512
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0.105666995
-          outWeight: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 0
+      duration: 8
     frequencyMultiplier: 4
-    envelopeTimeScale: 0.6
-    masterEnvelope:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 0
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      - serializedVersion: 3
-        time: 0.01
-        value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
+    envelopeTimeScale: 1
 --- !u!65 &273137511
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -745,191 +583,29 @@ MonoBehaviour:
     - frequency: 680
       gain: 0.2
       phaseOffset: 0
-      envelope:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 3
-          time: 0
-          value: 1
-          inSlope: -2.8737128
-          outSlope: -2.8737128
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0.037099987
-        - serializedVersion: 3
-          time: 0.3
-          value: 0
-          inSlope: 0.0016037512
-          outSlope: 0.0016037512
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0.105666995
-          outWeight: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 0
+      duration: 0.2
     - frequency: 540
       gain: 0.2
       phaseOffset: 0
-      envelope:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 3
-          time: 0
-          value: 1
-          inSlope: -2.8737128
-          outSlope: -2.8737128
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0.037099987
-        - serializedVersion: 3
-          time: 0.5
-          value: 0
-          inSlope: 0.0016037512
-          outSlope: 0.0016037512
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0.105666995
-          outWeight: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 0
+      duration: 0.5
     - frequency: 420
       gain: 0.2
       phaseOffset: 0
-      envelope:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 3
-          time: 0
-          value: 1
-          inSlope: -2.8737128
-          outSlope: -2.8737128
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0.037099987
-        - serializedVersion: 3
-          time: 0.8
-          value: 0
-          inSlope: 0.0016037512
-          outSlope: 0.0016037512
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0.105666995
-          outWeight: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 0
+      duration: 0.9
     - frequency: 300
       gain: 0.2
       phaseOffset: 0
-      envelope:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 3
-          time: 0
-          value: 1
-          inSlope: -1.8730197
-          outSlope: -1.8730197
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0.06275231
-        - serializedVersion: 3
-          time: 1.5
-          value: 0
-          inSlope: 0.0016037512
-          outSlope: 0.0016037512
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0.105666995
-          outWeight: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 0
+      duration: 1.5
     - frequency: 200
       gain: 0.2
       phaseOffset: 0
-      envelope:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 3
-          time: 0
-          value: 1
-          inSlope: -1.4410833
-          outSlope: -1.4410833
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0.07824711
-        - serializedVersion: 3
-          time: 2
-          value: 0
-          inSlope: 0.0016037512
-          outSlope: 0.0016037512
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0.105666995
-          outWeight: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 0
+      duration: 2
     - frequency: 100
       gain: 0.2
       phaseOffset: 0
-      envelope:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 3
-          time: 0
-          value: 1
-          inSlope: -1.0558133
-          outSlope: -1.0558133
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0.062610775
-        - serializedVersion: 3
-          time: 3
-          value: 0
-          inSlope: 0.0016037512
-          outSlope: 0.0016037512
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0.105666995
-          outWeight: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 0
+      duration: 3
     frequencyMultiplier: 4
-    envelopeTimeScale: 0.6
-    masterEnvelope:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 0
-        inSlope: 2
-        outSlope: 2
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      - serializedVersion: 3
-        time: 0.01
-        value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
+    envelopeTimeScale: 1
 --- !u!65 &459343164
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1320,191 +996,29 @@ MonoBehaviour:
     - frequency: 680
       gain: 0.2
       phaseOffset: 0
-      envelope:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 3
-          time: 0
-          value: 1
-          inSlope: -2.8737128
-          outSlope: -2.8737128
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0.037099987
-        - serializedVersion: 3
-          time: 0.3
-          value: 0
-          inSlope: 0.0016037512
-          outSlope: 0.0016037512
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0.105666995
-          outWeight: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 0
+      duration: 0.2
     - frequency: 600
       gain: 0.2
       phaseOffset: 0
-      envelope:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 3
-          time: 0
-          value: 1
-          inSlope: -2.8737128
-          outSlope: -2.8737128
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0.037099987
-        - serializedVersion: 3
-          time: 0.5
-          value: 0
-          inSlope: 0.0016037512
-          outSlope: 0.0016037512
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0.105666995
-          outWeight: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 0
+      duration: 0.8
     - frequency: 520
       gain: 0.2
       phaseOffset: 0
-      envelope:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 3
-          time: 0
-          value: 1
-          inSlope: -2.8737128
-          outSlope: -2.8737128
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0.037099987
-        - serializedVersion: 3
-          time: 0.8
-          value: 0
-          inSlope: 0.0016037512
-          outSlope: 0.0016037512
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0.105666995
-          outWeight: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 0
+      duration: 1.6
     - frequency: 440
       gain: 0.2
       phaseOffset: 0
-      envelope:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 3
-          time: 0
-          value: 1
-          inSlope: -1.8730197
-          outSlope: -1.8730197
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0.06275231
-        - serializedVersion: 3
-          time: 1.5
-          value: 0
-          inSlope: 0.0016037512
-          outSlope: 0.0016037512
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0.105666995
-          outWeight: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 0
+      duration: 3.2
     - frequency: 300
       gain: 0.2
       phaseOffset: 0
-      envelope:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 3
-          time: 0
-          value: 1
-          inSlope: -1.4410833
-          outSlope: -1.4410833
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0.07824711
-        - serializedVersion: 3
-          time: 2
-          value: 0
-          inSlope: 0.0016037512
-          outSlope: 0.0016037512
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0.105666995
-          outWeight: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 0
+      duration: 6.4
     - frequency: 100
       gain: 0.2
       phaseOffset: 0
-      envelope:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 3
-          time: 0
-          value: 1
-          inSlope: -1.0558133
-          outSlope: -1.0558133
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0.062610775
-        - serializedVersion: 3
-          time: 3
-          value: 0
-          inSlope: 0.0016037512
-          outSlope: 0.0016037512
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0.105666995
-          outWeight: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 0
+      duration: 9
     frequencyMultiplier: 4
-    envelopeTimeScale: 0.6
-    masterEnvelope:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 0
-        inSlope: 2
-        outSlope: 2
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      - serializedVersion: 3
-        time: 0.01
-        value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
+    envelopeTimeScale: 1
 --- !u!65 &1729853884
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1844,218 +1358,33 @@ MonoBehaviour:
     - frequency: 800
       gain: 0.2
       phaseOffset: 0
-      envelope:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 3
-          time: 0
-          value: 1
-          inSlope: -2.8737128
-          outSlope: -2.8737128
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0.037099987
-        - serializedVersion: 3
-          time: 0.3
-          value: 0
-          inSlope: 0.0016037512
-          outSlope: 0.0016037512
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0.105666995
-          outWeight: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 0
+      duration: 0.1
     - frequency: 680
       gain: 0.2
       phaseOffset: 0
-      envelope:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 3
-          time: 0
-          value: 1
-          inSlope: -2.8737128
-          outSlope: -2.8737128
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0.037099987
-        - serializedVersion: 3
-          time: 0.5
-          value: 0
-          inSlope: 0.0016037512
-          outSlope: 0.0016037512
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0.105666995
-          outWeight: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 0
+      duration: 0.3
     - frequency: 560
       gain: 0.41
       phaseOffset: 0
-      envelope:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 3
-          time: 0
-          value: 1
-          inSlope: -2.8737128
-          outSlope: -2.8737128
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0.037099987
-        - serializedVersion: 3
-          time: 0.8
-          value: 0
-          inSlope: 0.0016037512
-          outSlope: 0.0016037512
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0.105666995
-          outWeight: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 0
+      duration: 0.5
     - frequency: 440
       gain: 0.2
       phaseOffset: 0
-      envelope:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 3
-          time: 0
-          value: 1
-          inSlope: -1.8730197
-          outSlope: -1.8730197
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0.06275231
-        - serializedVersion: 3
-          time: 1.5
-          value: 0
-          inSlope: 0.0016037512
-          outSlope: 0.0016037512
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0.105666995
-          outWeight: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 0
+      duration: 0.7
     - frequency: 320
       gain: 0.2
       phaseOffset: 0
-      envelope:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 3
-          time: 0
-          value: 1
-          inSlope: -1.4410833
-          outSlope: -1.4410833
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0.07824711
-        - serializedVersion: 3
-          time: 2
-          value: 0
-          inSlope: 0.0016037512
-          outSlope: 0.0016037512
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0.105666995
-          outWeight: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 0
+      duration: 0.9
     - frequency: 200
       gain: 0.2
       phaseOffset: 0
-      envelope:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 3
-          time: 0
-          value: 1
-          inSlope: -1.0558133
-          outSlope: -1.0558133
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0.062610775
-        - serializedVersion: 3
-          time: 3
-          value: 0
-          inSlope: 0.0016037512
-          outSlope: 0.0016037512
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0.105666995
-          outWeight: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 0
+      duration: 1.1
     - frequency: 80
       gain: 0.2
       phaseOffset: 0
-      envelope:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 3
-          time: 0
-          value: 1
-          inSlope: -1.0558133
-          outSlope: -1.0558133
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0.062610775
-        - serializedVersion: 3
-          time: 3
-          value: 0
-          inSlope: 0.0016037512
-          outSlope: 0.0016037512
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0.105666995
-          outWeight: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 0
+      duration: 1.5
     frequencyMultiplier: 2.5
     envelopeTimeScale: 1
-    masterEnvelope:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 0
-        inSlope: 2
-        outSlope: 2
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      - serializedVersion: 3
-        time: 0.01
-        value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
 --- !u!65 &2035136254
 BoxCollider:
   m_ObjectHideFlags: 0
