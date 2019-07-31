@@ -17,6 +17,10 @@ public class ToneGenerationController : MonoBehaviour
             if (Physics.Raycast(mousePickRay, out RaycastHit hit))
             {
                 BellSynthesizer bell = hit.collider.gameObject.GetComponent<BellSynthesizer>();
+                if (bell == null)
+                {
+                    bell = hit.collider.transform.gameObject.GetComponentInParent<BellSynthesizer>();
+                }
                 if (bell != null)
                 {
                     bell.Play();
