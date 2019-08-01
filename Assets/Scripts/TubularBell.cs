@@ -11,7 +11,11 @@ public class TubularBell : Bell
     private float envelopeRangeAcrossExtent = 0.75f;
 
     [SerializeField]
-    private float frequencyRangeAcrossExtent = 1.025f;
+    [Range(0,1)]
+    private float frequencyVariationAcrossExtent = 0.005f;
+
+    [SerializeField]
+    private float impactForceMedian = 0.075f;
 
     private CapsuleCollider _capsuleCollider;
     private Vector3 _top;
@@ -68,10 +72,10 @@ public class TubularBell : Bell
         BellSynthesizer.BellPrototype proto = this.BellSynthesizer.Prototype;
 
         proto.envelopeTimeScale = Mathf.Lerp(proto.envelopeTimeScale * (1-envelopeRangeAcrossExtent), proto.envelopeTimeScale, extent);
-        proto.frequencyMultiplier = Mathf.Lerp(proto.frequencyMultiplier * frequencyRangeAcrossExtent, proto.frequencyMultiplier / frequencyRangeAcrossExtent, extent);
-        // proto.gain = 1; // we should use force to scale this
+        proto.frequencyMultiplier = Mathf.Lerp(proto.frequencyMultiplier * (1+frequencyVariationAcrossExtent), proto.frequencyMultiplier * (1-frequencyVariationAcrossExtent), extent);
+        proto.gain *= force / impactForceMedian;
 
         this.BellSynthesizer.Play(proto);
-        // Debug.LogFormat("[TubularBell({0})::Ring] - impactPoint:{1} extent: {2} force: {3}", gameObject.name, impactPoint.ToString("F6"), extent, force);
+        Debug.LogFormat("[TubularBell({0})::Ring] - impactPoint:{1} extent: {2} force: {3}", gameObject.name, impactPoint.ToString("F6"), extent, force);
     }
 }

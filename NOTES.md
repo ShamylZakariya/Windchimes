@@ -14,6 +14,9 @@
 - Trigger bell chime at runtime with intensity, duration, and an appropriate envelope based on the impact kinetics.
     - do we need to generate different tones based on the location of the impact on the bell? Or is the bell tone independent of impact site?
 
+## Phase 3
+- Use Job System to run these rays in parallel
+
 ### On Bell Tone Synthesis
 https://www.soundonsound.com/techniques/synthesizing-bells
 - Figure 8 is particularly informative.
@@ -30,8 +33,6 @@ At the very minimum, we need to be able to compose pairs of sine waves and envel
 Take a short clip of the kind of tubular bell sound I want, run it through some kind of FFT analysis, and determine which frequencies are making it up. What software would I need?
 
 
-## Phase 3
-- Use Job System to run these rays in parallel
 
 ---
 
