@@ -6,18 +6,44 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody), typeof(Collider))]
 public class Bell : MonoBehaviour
 {
+    [SerializeField]
+    private BellSynthesizer bellSynthesizer = null;
+
+    [Header("Manual dinging support for testing")]
+    [SerializeField]
+    private bool clickToRing = false;
+    [SerializeField]
+    private float clickForce = 0.1f;
+
     private Collider _collider;
     private Rigidbody _body;
 
 
     public Collider Collider { get { return _collider; } }
     public Rigidbody Rigidbody { get { return _body; } }
+    public BellSynthesizer BellSynthesizer { get { return bellSynthesizer; }}
 
 
     virtual protected void Awake()
     {
         _collider = GetComponent<Collider>();
         _body = GetComponent<Rigidbody>();
+    }
+
+    virtual protected void Update()
+    {
+        if (clickToRing && Input.GetMouseButtonDown(0))
+        {
+            Ray mousePickRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(mousePickRay, out RaycastHit hit))
+            {
+                BellSynthesizer bell = hit.collider.gameObject.GetComponentInChildren<BellSynthesizer>();
+                if (bell == bellSynthesizer && bell != null)
+                {
+                    Ring(hit.point, clickForce);
+                }
+            }
+        }
     }
 
     void OnCollisionEnter(Collision collision)

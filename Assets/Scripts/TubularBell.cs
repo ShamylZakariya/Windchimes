@@ -5,8 +5,15 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody), typeof(CapsuleCollider))]
 public class TubularBell : Bell
 {
-    private CapsuleCollider _capsuleCollider;
+    [Header("Bell Dynamics")]
+    [SerializeField]
+    [Range(0,1)]
+    private float envelopeRangeAcrossExtent = 0.75f;
 
+    [SerializeField]
+    private float frequencyRangeAcrossExtent = 1.025f;
+
+    private CapsuleCollider _capsuleCollider;
     private Vector3 _top;
     private Vector3 _bottom;
     private float _radius;
@@ -58,6 +65,13 @@ public class TubularBell : Bell
     override public void Ring(Vector3 impactPoint, float force)
     {
         float extent = Mathf.Clamp01((impactPoint - Top).magnitude / Length);
-        Debug.LogFormat("[TubularBell({0})::Ring] - impactPoint:{1} extent: {2} force: {3}", gameObject.name, impactPoint, extent, force);
+        BellSynthesizer.BellPrototype proto = this.BellSynthesizer.Prototype;
+
+        proto.envelopeTimeScale = Mathf.Lerp(proto.envelopeTimeScale * (1-envelopeRangeAcrossExtent), proto.envelopeTimeScale, extent);
+        proto.frequencyMultiplier = Mathf.Lerp(proto.frequencyMultiplier * frequencyRangeAcrossExtent, proto.frequencyMultiplier / frequencyRangeAcrossExtent, extent);
+        // proto.gain = 1; // we should use force to scale this
+
+        this.BellSynthesizer.Play(proto);
+        // Debug.LogFormat("[TubularBell({0})::Ring] - impactPoint:{1} extent: {2} force: {3}", gameObject.name, impactPoint.ToString("F6"), extent, force);
     }
 }

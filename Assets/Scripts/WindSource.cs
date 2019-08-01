@@ -254,10 +254,6 @@ public class WindSource : MonoBehaviour
 
             _particlePaths.Add(id, (new Vector3[] { startPosition }).ToList());
         }
-        else
-        {
-            Debug.LogFormat("[EmitWindParticle] - particle buffer is full");
-        }
     }
 
     private int InitWindParticle(ref WindParticle p, Vector3 startPosition, Vector3 startDirection)

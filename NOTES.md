@@ -32,3 +32,9 @@ Take a short clip of the kind of tubular bell sound I want, run it through some 
 
 ## Phase 3
 - Use Job System to run these rays in parallel
+
+---
+
+## Known Bugs
+
+- My chime rigid body joints don't seem to constrain rotation

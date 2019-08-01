@@ -42,13 +42,17 @@ public class BellSynthesizer : MonoBehaviour
         [SerializeField]
         public float envelopeTimeScale = 1f;
 
+        [SerializeField]
+        public float gain = 1f;
+
         public BellPrototype Clone()
         {
             return new BellPrototype()
             {
                 tones = tones.Select((i) => i).ToArray(),
                 frequencyMultiplier = this.frequencyMultiplier,
-                envelopeTimeScale = this.envelopeTimeScale
+                envelopeTimeScale = this.envelopeTimeScale,
+                gain = this.gain
             };
         }
 
@@ -69,9 +73,10 @@ public class BellSynthesizer : MonoBehaviour
     private float _secondsUntilNextCleanup = 0;
     private bool _generatingTone;
     private object _generatingToneLock = new object();
-    private const float CleanupPerdiod = 1f;
+    private const float CleanupPeriod = 1f;
     private const float TwoPi = Mathf.PI * 2;
 
+    public BellPrototype Prototype { get { return bellPrototype.Clone(); } }
 
     void Start()
     {
@@ -86,7 +91,7 @@ public class BellSynthesizer : MonoBehaviour
         _secondsUntilNextCleanup -= Time.deltaTime;
         if (_secondsUntilNextCleanup <= 0)
         {
-            _secondsUntilNextCleanup += CleanupPerdiod;
+            _secondsUntilNextCleanup += CleanupPeriod;
             _activeBells = _activeBells.Where((i) => !i.completed).ToList();
         }
 
@@ -161,11 +166,11 @@ public class BellSynthesizer : MonoBehaviour
                     for (int i = 0, iEnd = data.Length; i < iEnd; i += channels)
                     {
                         tone.phase += increment;
-                        float t = Mathf.Max(1 - (age / tone.duration), 0);
-                        t *= t;
-                        float value = (t * tone.gain * Mathf.Sin(tone.phase + tone.phaseOffset));
-
+                        float envelope = Mathf.Max(1 - (age / tone.duration), 0);
+                        envelope *= envelope;
                         age += dspTimeIncrement;
+
+                        float value = (envelope * tone.gain * bell.gain * Mathf.Sin(tone.phase + tone.phaseOffset));
                         data[i] += value;
 
                         if (channels == 2)
