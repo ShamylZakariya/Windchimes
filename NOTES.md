@@ -1,21 +1,31 @@
 # WindChimes
 
-## Implementation Details
-- While I've written some raycasting ops that should run safely in Unity's Job System (e.g., self-contained and threadsafe), looks like the Job System supports raycasts, so for now we're using built-in Physics.Raycast with a layermask for matching only the wind chime layer.
 
-## Phase 1
-### Done
+## ~~Phase 1~~
 - Use simple raycasting to walk spread-out parallel rays in short hops, bearing some small mass, to the wind chimes. 
 - Let the rays bounce and hit other chimes.
 - Observe collisions between chimes.
 
-## Phase 2
+## ~~Phase 2~~
 - Generate appropriate loopable bell tones for each chime based on its radius/length/mass and other factors.
 - Trigger bell chime at runtime with intensity, duration, and an appropriate envelope based on the impact kinetics.
     - do we need to generate different tones based on the location of the impact on the bell? Or is the bell tone independent of impact site?
 
 ## Phase 3
 - Use Job System to run these rays in parallel
+
+---
+
+## Implementation Details
+- While I've written some raycasting ops that should run safely in Unity's Job System (e.g., self-contained and threadsafe), looks like the Job System supports raycasts, so for now we're using built-in Physics.Raycast with a layermask for matching only the wind chime layer.
+
+---
+
+## Known Bugs
+- My tubular bell sounds better (more tubular, more bell-like) in the ToneGeneration scene than in Windchime scene. 
+- My chime rigid body joints don't seem to constrain rotation
+
+---
 
 ### On Bell Tone Synthesis
 https://www.soundonsound.com/techniques/synthesizing-bells
@@ -33,9 +43,3 @@ At the very minimum, we need to be able to compose pairs of sine waves and envel
 Take a short clip of the kind of tubular bell sound I want, run it through some kind of FFT analysis, and determine which frequencies are making it up. What software would I need?
 
 
-
----
-
-## Known Bugs
-
-- My chime rigid body joints don't seem to constrain rotation
