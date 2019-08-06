@@ -37,7 +37,6 @@ public class TubularBell : Bell
     /// <returns>Get the length of the bell in world space</returns>
     public float Length { get { return _length; } }
 
-
     override protected void Awake()
     {
         base.Awake();
@@ -65,7 +64,6 @@ public class TubularBell : Bell
         return e;
     }
 
-
     override public void Ring(Vector3 impactPoint, float force)
     {
         float extent = Mathf.Clamp01((impactPoint - Top).magnitude / Length);
@@ -76,6 +74,5 @@ public class TubularBell : Bell
         proto.gain *= force / impactForceMedian;
 
         this.BellSynthesizer.Play(proto);
-        Debug.LogFormat("[TubularBell({0})::Ring] - impactPoint:{1} extent: {2} force: {3}", gameObject.name, impactPoint.ToString("F6"), extent, force);
     }
 }

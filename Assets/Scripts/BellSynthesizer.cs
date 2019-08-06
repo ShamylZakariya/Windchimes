@@ -60,6 +60,7 @@ public class BellSynthesizer : MonoBehaviour
     }
 
     [SerializeField] BellPrototype bellPrototype = null;
+    [SerializeField] int maxActiveBells = 6;
 
     //
     //  Private statue
@@ -126,8 +127,17 @@ public class BellSynthesizer : MonoBehaviour
 
         lock (_generatingToneLock)
         {
-            if (_generatingTone) { _queuedBells.Add(bp); }
-            else { _activeBells.Add(bp); }
+            if (maxActiveBells == 0 || (_activeBells.Count + _queuedBells.Count < maxActiveBells))
+            {
+                if (_generatingTone)
+                {
+                    _queuedBells.Add(bp);
+                }
+                else
+                {
+                    _activeBells.Add(bp);
+                }
+            }
         }
 
         if (!_source.isPlaying)
